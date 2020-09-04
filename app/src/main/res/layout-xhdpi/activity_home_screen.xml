@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/main_layout_home"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        app:itemRippleColor="@color/colorTextBlackAlpha"
+        app:itemHorizontalTranslationEnabled="true"
+        app:itemIconTint="@color/custom_item_bottom_nav"
+        app:itemTextColor="@color/custom_item_bottom_nav"
+        app:itemIconSize="26dp"
+        android:background="@drawable/custom_bottom_nav"
+        android:id="@+id/bottomNav"
+        app:menu="@menu/navigation_bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"/>
+
+
+
+
+
+</RelativeLayout>

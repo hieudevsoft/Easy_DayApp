@@ -1,0 +1,87 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTextBlack"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.easyday.FRAGMENT.HomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/image_Theme_Home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ImageView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ly_btLight"
+                android:orientation="horizontal"
+                android:background="@drawable/custom_card_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+        <ToggleButton
+            android:layout_margin="10dp"
+            android:id="@+id/bt_flashlight"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/custom_flashlight"
+            android:textOff=""
+            android:textOn=""
+             />
+            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/ly_btNote"
+                    android:layout_marginStart="30dp"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/ly_btLight"
+                    android:background="@drawable/custom_card_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+            <ImageButton
+                android:layout_margin="10dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/notepad"
+                android:id="@+id/bt_addNote"
+                android:layout_width="70dp"
+                android:layout_height="70dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginStart="30dp"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/ly_btNote"
+                    android:background="@drawable/custom_card_me"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:layout_margin="10dp"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/map"
+                        android:id="@+id/bt_Map"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"/>
+                </LinearLayout>
+        </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</LinearLayout>

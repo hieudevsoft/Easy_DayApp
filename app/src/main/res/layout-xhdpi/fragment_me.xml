@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorBackGroundMe"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:background="@drawable/custom_header_me"
+            android:orientation="horizontal">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgAvatarHeader"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/blank_avatar"
+                app:civ_border_color="#ECB98D"
+                app:civ_border_width="1dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_name_me_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/opensans"
+                    android:letterSpacing="0.05"
+                    android:maxEms="20"
+                    android:text="@string/name_empty"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/tv_email_me_header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/helveticaneue_light"
+                    android:letterSpacing="0.08"
+                    android:maxEms="10"
+                    android:text="@string/email_me_empty"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="-30dp"
+            android:layout_marginEnd="10dp"
+            android:alpha="0.94"
+            android:background="@drawable/custom_card_me"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/imagebt_themes_me"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_themes_me" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagebt_themes_me"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/lato_regular"
+                    android:paddingBottom="10dp"
+                    android:text="@string/themes_menu"
+                    android:textColor="@color/colorTextBlackAlpha"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:id="@+id/imagebt_home_me"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_home_me" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imagebt_home_me"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/lato_regular"
+                    android:paddingBottom="10dp"
+                    android:text="@string/home_menu"
+                    android:textColor="@color/colorTextBlackAlpha"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="45dp"
+            android:background="@drawable/custom_card_me"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/opensans"
+                android:letterSpacing="0.06"
+                android:paddingBottom="10dp"
+                android:text="@string/profile"
+                android:textColor="@color/colorTextBlackAlpha"
+                android:textSize="30sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/name"
+                android:textColorHint="@color/colorTextBlackAlpha"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="#FF5722"
+                app:boxStrokeWidth="0.5dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorNavIcon"
+                app:endIconTintMode="src_atop"
+                app:startIconDrawable="@drawable/ic_me">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:textSize="18sp"
+                    android:id="@+id/edt_name_me"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helveticaneue_light"
+                    android:inputType="textPersonName" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/email"
+                android:textColorHint="@color/colorTextBlackAlpha"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="#FF5722"
+                app:boxStrokeWidth="0.5dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorNavIcon"
+                app:endIconTintMode="src_atop"
+                app:startIconDrawable="@drawable/ic_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_email_me"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helveticaneue_light"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="Phone Number"
+                android:textColorHint="@color/colorTextBlackAlpha"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="#FF5722"
+                app:boxStrokeWidth="0.5dp"
+                app:endIconMode="clear_text"
+                app:endIconTint="@color/colorNavIcon"
+                app:endIconTintMode="src_in"
+                app:startIconDrawable="@drawable/ic_phone">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_phone_number"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helveticaneue_light"
+                    android:inputType="phone" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:hint="@string/password"
+                android:textColorHint="@color/colorTextBlackAlpha"
+                app:boxBackgroundMode="outline"
+                app:boxStrokeColor="#FF5722"
+                app:boxStrokeWidth="0.5dp"
+                app:endIconMode="password_toggle"
+                app:endIconTint="@color/colorNavIcon"
+                app:endIconTintMode="src_in"
+                app:startIconDrawable="@drawable/ic_password">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_password_me"
+                    android:textSize="18sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helveticaneue_light"
+                    android:inputType="textPassword" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner_me_gender"
+                android:padding="13dp"
+                android:background="@drawable/custom_spinner"
+                android:entries="@array/genderList"
+                android:spinnerMode="dropdown"
+                android:layoutMode="clipBounds"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <LinearLayout
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <com.google.android.material.button.MaterialButton
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.AppCompat.Button"
+                    android:textAllCaps="false"
+                    android:id="@+id/bt_submit_me"
+                    android:elevation="3dp"
+                    app:backgroundTintMode="src_atop"
+                    android:textSize="15sp"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/opensans"
+                    android:letterSpacing="0.06"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColor="#fff"
+                    android:text="@string/submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+                <com.google.android.material.button.MaterialButton
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    style="@style/Widget.AppCompat.Button"
+                    android:textAllCaps="false"
+                    android:id="@+id/bt_signout"
+                    android:elevation="3dp"
+                    app:backgroundTintMode="src_atop"
+                    android:textSize="15sp"
+                    android:layout_marginTop="6dp"
+                    android:fontFamily="@font/opensans"
+                    android:letterSpacing="0.06"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="30dp"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="10dp"
+                    android:includeFontPadding="false"
+                    android:paddingBottom="10dp"
+                    android:textColor="#fff"
+                    android:text="@string/sign_out"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

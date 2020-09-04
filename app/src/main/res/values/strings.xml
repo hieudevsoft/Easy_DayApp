@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Easy Day</string>
+
+    <!--    String Splash Screen-->
+    <string name="APP_NAME">Easy Day</string>
+    <string name="bottom_text_splash">Make a day easier</string>
+
+    <!--    String Welcome+SignUp Screen-->
+    <string name="sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="hint_email">Enter Email</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="password">Password</string>
+    <string name="hint_password">Enter password</string>
+    <string name="no_account">Don\'t have an account ?</string>
+    <string name="or_welcome">OR</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="hint_confirmpass">Enter confirm password</string>
+    <string name="already_exists_account">Already exists account ?</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <!--    String Menu Navigation-->
+    <string name="themes_menu">Themes</string>
+    <string name="home_menu">Home</string>
+    <string name="me_menu">Me</string>
+    <string name="me">Me</string>
+    <string name="name_empty">Name Empty</string>
+    <string name="email_me_empty">email@easyday.com</string>
+    <string name="profile">Profile</string>
+    <string name="name">Name</string>
+    <string name="submit">Submit</string>
+    <string name="send">Send</string>
+    <string name="sign_out">Sign out</string>
+
+    <!-- Fragment Me -->
+    <string-array name="genderList">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="priorityList">
+        <item>Priority Low</item>
+        <item>Priority Normal</item>
+        <item>Priority High</item>
+    </string-array>
+    <!-- facebook login-->
+    <string name="facebook_app_id">221508672522336</string>
+    <string name="fb_login_protocol_scheme">fb221508672522336</string>
+
+    <string name="priotity">Priority</string>
+
+    <string name="API_KEY_GOOGLE_MAP">AIzaSyALh6EOl0a_m64haVONolvGbHETmYP7sC0</string>
+</resources>

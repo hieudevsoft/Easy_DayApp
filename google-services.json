@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "474448741441",
+    "firebase_url": "https://easyday-92480.firebaseio.com",
+    "project_id": "easyday-92480",
+    "storage_bucket": "easyday-92480.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474448741441:android:339ec0b30e5dfefaeff2c0",
+        "android_client_info": {
+          "package_name": "com.example.easyday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474448741441-mpacnjsu4hrp200riok7att3pbea8bll.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.easyday",
+            "certificate_hash": "eccecf4a0e0d5e7ab8fcfadf89d267164a9c8475"
+          }
+        },
+        {
+          "client_id": "474448741441-349qevqp17atjgdi1daocgira1ci8lqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARpGhPNEbDkWXvDsKNGrYGdJR5h7zStPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474448741441-349qevqp17atjgdi1daocgira1ci8lqp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

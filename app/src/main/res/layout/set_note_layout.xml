@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <EditText
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_password"
+            android:textStyle="bold"
+            android:hint="ID NOTE"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:id="@+id/edt_id_Note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_card_me"
+            android:backgroundTint="#F1C161"
+            android:fontFamily="@font/helveticaneue_light"
+            android:inputType="textMultiLine"
+            android:padding="11dp"
+            android:textSize="20sp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textColorHint="@color/colorTextBlackAlpha"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/colorBackGroundIcon"
+        app:endIconTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_edit">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_title_note"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/custom_card_me"
+            android:backgroundTint="#E8EFEE"
+            android:fontFamily="@font/helveticaneue_light"
+            android:inputType="textMultiLine"
+            android:textSize="18sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:spinnerMode="dropdown"
+        style="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+        android:background="@drawable/custom_card_me"
+        android:backgroundTint="@color/colorNavIcon"
+        android:padding="11dp"
+        android:entries="@array/priorityList"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="5dp"
+        android:id="@+id/spinner_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
+        <EditText
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/ic_content"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/edt_content_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/custom_card_me"
+            android:backgroundTint="#63635E"
+            android:fontFamily="@font/helveticaneue_light"
+            android:inputType="textMultiLine"
+            android:padding="11dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="18sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        app:layout_constraintTop_toBottomOf="@id/edt_content_note" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:backgroundTint="#E3E39C"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/custom_card_me"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/recyclerViewImageNote"
+            android:padding="10dp"
+            android:layout_marginBottom="53dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/bt_done_note"
+            app:srcCompat="@drawable/ic_done"
+            android:tintMode="src_atop"
+            app:rippleColor="@color/colorPrimaryDark"
+            android:theme="@style/colorSetNote"
+            android:layout_margin="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:borderWidth="0dp"
+            android:elevation="1dp"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bt_camera_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="1dp"
+        android:theme="@style/colorSetNote"
+        android:tintMode="src_atop"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:layout_constraintEnd_toStartOf="@+id/bt_done_note"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toEndOf="@+id/bt_back_note"
+        app:rippleColor="@color/colorPrimaryDark"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="parent" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bt_back_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginEnd="316dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="1dp"
+        android:tintMode="src_atop"
+        android:theme="@style/colorSetNote"
+        app:borderWidth="0dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="@color/colorPrimaryDark"
+        app:srcCompat="@drawable/ic_back" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

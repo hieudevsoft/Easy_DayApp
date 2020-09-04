@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/fragment_Map"
+        android:name="com.example.easyday.FRAGMENT.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/bt_FindPath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_button_login"
+        android:fontFamily="@font/lato_regular"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:text="Find Path"
+        android:textColor="@color/colorTextWhite"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/fragment_Map"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_Map"
+        app:layout_constraintStart_toStartOf="@+id/fragment_Map" />
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_Inforpath"
+        android:background="@drawable/custom_infor_path"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_margin="10dp"
+        android:background="@drawable/custom_search_place"
+        android:elevation="6dp"
+        app:iconifiedByDefault="false"
+        app:queryHint="Search..."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/search_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

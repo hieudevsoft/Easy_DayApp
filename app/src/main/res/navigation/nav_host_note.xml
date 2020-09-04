@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_host_note"
+    app:startDestination="@id/mainNote">
+
+    <fragment
+        android:id="@+id/mainNote"
+        android:name="com.example.easyday.FRAGMENT.MainNoteFragment" >
+        <action
+            android:id="@+id/actionAddNote"
+            app:destination="@id/setNote"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/setNote"
+        android:name="com.example.easyday.FRAGMENT.SetNoteFragment" >
+        <action
+            android:id="@+id/actionReturnMainNote"
+            app:destination="@id/mainNote"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_pop_exit_anim" />
+        <argument
+            app:nullable="true"
+            app:argType="com.example.easyday.ENTITY.Note"
+            android:name="Note"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>

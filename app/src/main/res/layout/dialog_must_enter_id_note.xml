@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:background="#E53935"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <TextView
+        android:textSize="20sp"
+        android:maxEms="13"
+        android:textColor="@color/colorTextWhite"
+        android:fontFamily="@font/notosans"
+        android:layout_margin="10dp"
+        android:text="You must enter the different note's ID so that we can easily manage your notes ( Note's ID doesn't contain ' _ ')."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/bt_ok_term_note"
+        android:backgroundTint="#43A047"
+        android:layout_gravity="center_horizontal"
+        android:text="OK"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Customize your theme here. -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    
+    <style name="MyEditTextCustom">
+        <item name="colorControlNormal">@color/colorBackGroundWelcome</item>
+        <item name="colorControlActivated">#232020</item>
+    </style>
+    
+    <style name="ChipStyleCustom" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/custom_box_chip</item>
+        <item name="android:textColor">@color/custome_text_chip</item>
+        <item name="checkedIconTint">@color/colorTextWhite</item>
+        <item name="rippleColor">@color/colorNavIcon</item>
+    </style>
+
+    <style name="colorSetNote" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorOnSecondary">@color/colorTextWhite</item>
+        <item name="android:backgroundTint">#00C3FF</item>
+    </style>
+
+    <style name="colorMainNote" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorOnSecondary">#0048FF</item>
+        <item name="android:backgroundTint">#FDD835</item>
+    </style>
+
+</resources>

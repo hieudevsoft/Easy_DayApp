@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context=".ACTIVITY.SplashActivity">
+    <RelativeLayout
+        android:id="@+id/rlt_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@drawable/background_splash"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/img_ic_splash"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/splash_icon"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_splash"
+            android:transitionName="app_name_transition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_ic_splash"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/notosans"
+            android:includeFontPadding="false"
+            android:text="@string/APP_NAME"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:alpha="0.6"
+            android:indeterminateTintMode="src_atop"
+            android:indeterminateOnly="true"
+            android:interpolator="@android:anim/anticipate_interpolator"
+            android:indeterminateDuration="2000"
+            android:id="@+id/progressbar"
+            android:indeterminateTint="#2B1212"
+            android:layout_marginTop="20dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/tv_splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tv_bottom_splash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="40dp"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="10sp"
+            android:text="@string/bottom_text_splash"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextWhite"
+            android:textSize="20sp"
+            android:textStyle="italic" />
+    </RelativeLayout>
+
+
+</LinearLayout>

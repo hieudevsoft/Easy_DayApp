@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/til_search"
+        app:boxCornerRadiusBottomEnd="20dp"
+        app:boxCornerRadiusBottomStart="20dp"
+        app:boxCornerRadiusTopStart="20dp"
+        app:boxCornerRadiusTopEnd="20dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Search"
+        android:textColorHint="@color/colorTextBlackAlpha"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/colorBackGroundIcon"
+        app:endIconTintMode="src_atop"
+        app:startIconDrawable="@drawable/ic_search">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:padding="5dp"
+            android:background="@drawable/custom_card_me"
+            android:textSize="18sp"
+            android:id="@+id/edt_search_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/helveticaneue_light"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chip_priority_group"
+        app:singleSelection="true"
+        android:layout_marginRight="5dp"
+        android:layout_below="@id/til_search"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content">
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_high"
+            android:text="Priority High "
+            style="@style/ChipStyleCustom"
+            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_low"
+            style="@style/ChipStyleCustom"
+            android:layout_toStartOf="@id/chip_high"
+            android:layout_below="@id/til_search"
+            android:text="Priority Low "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.chip.ChipGroup>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        app:backgroundTint="#00ACC1"
+        android:tintMode="src_atop"
+        app:borderWidth="0dp"
+        android:theme="@style/colorMainNote"
+        android:id="@+id/fltbt_AddNote"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        app:rippleColor="@color/colorTextBlack"
+        app:fabSize="mini"
+        android:src="@drawable/ic_add"
+        android:layout_below="@id/til_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewNotes"
+        android:padding="8dp"
+        android:scrollbars="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/chip_priority_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+</RelativeLayout>
