@@ -41,10 +41,12 @@ public class MapActivity extends AppCompatActivity {
     {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.fragment_Map);
-        mapFragment.setSearchView(place);
-        mapFragment.setBt_FindPath(bt_Findpath);
-        mapFragment.setSearchLocation(layout_InforPath);
-        mapFragment.setFindPath(layout_InforPath);
-
+        if(mapFragment!=null) {
+            mapFragment.getStarted();
+            mapFragment.setSearchView(place);
+            mapFragment.setBt_FindPath(bt_Findpath);
+            mapFragment.setSearchLocation(layout_InforPath);
+            mapFragment.setFindPath(layout_InforPath);
+        }else TOOL.setToast(this, "Don't make the map");
     }
 }

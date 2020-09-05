@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 
 import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.R;
@@ -45,7 +47,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     List<LatLng> listPoint;
     LatLng location_search;
     MarkerOptions markerOptions;
+    private String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     Button bt_FindPath;
+    private boolean mCurrentPermissionGranted = false;
+    final static int REQUEST_CODE_PERMISSION_MAP = 44;
     public void setSearchView(SearchView searchView) {
         this.searchView = searchView;
     }
@@ -54,6 +60,14 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         this.listPoint = new ArrayList<>();
         this.markerOptions = new MarkerOptions();
         this.location_search=null;
+    }
+    public void getStarted()
+    {
+        requestPermissionLocation();
+    }
+
+    private void initMap()
+    {
         this.getMapAsync(this);
     }
 
@@ -61,13 +75,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         this.bt_FindPath = bt_FindPath;
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
         map.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(true);
-        getCurrentLocation();
+        if(mCurrentPermissionGranted) {
+            showMyLocation();
+        }
     }
 
     public void setFindPath(final RelativeLayout inforPath)
@@ -86,6 +103,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                if(map!=null){
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -95,7 +113,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                 inforPath.setVisibility(View.GONE);
                 inforPath.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.anim_infor_path_exit));
                 if(listPoint.size()==2) {
-                      map.clear();
+                    map.clear();
                     listPoint.remove(1);
                     markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current));
                     map.addMarker(markerOptions.position(listPoint.get(0)).title(locationCurrent));
@@ -115,12 +133,22 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                             markerOptions.title(location);
                             markerOptions.position(latLng);
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
-                            map.addMarker(markerOptions);
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                            try {
+                                map.addMarker(markerOptions);
+                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                            }catch (Exception e)
+                            {
+                                TOOL.setToast(getContext(), "Reload map...");
+                            }
+
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }}
+                else {
+                    TOOL.setToast(getContext(), "Reset map to get your location ~");
+                    getActivity().finish();
                 }
                 return false;
             }
@@ -131,52 +159,79 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
             }
         });
     }
-
-    private void getCurrentLocation() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) !=
-                PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-
-                return;
-        } showMyLocation();
-    }
     @SuppressLint("MissingPermission")
-    private void showMyLocation()
-    {
+    private void showMyLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-            @Override
-            public void onComplete(@NonNull Task<Location> task) {
-                Location location = task.getResult();
-                if(location!=null)
-                {
-                    Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-                    try {
-                        List<Address> list = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            Address address = list.get(0);
-                            LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                            listPoint.add(latLng);
-                            locationCurrent = address.getAddressLine(0);
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current));
-                            markerOptions.title(locationCurrent);
-                            markerOptions.position(latLng);
-                            map.addMarker(markerOptions);
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
+            try {
+                if (mCurrentPermissionGranted) {
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            Location location = task.getResult();
+                            if (location != null) {
+                                Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                                try {
+                                    List<Address> list = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    Address address = list.get(0);
+                                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                                    listPoint.add(latLng);
+                                    locationCurrent = address.getAddressLine(0);
+                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_current));
+                                    markerOptions.title(locationCurrent);
+                                    markerOptions.position(latLng);
+                                    map.addMarker(markerOptions);
+                                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }
+                    });
                 }
+            }catch(Exception e){
+
             }
-        });
+    }
+
+    private void requestPermissionLocation()
+    {
+        String [] permissions = {FINE_LOCATION,COARSE_LOCATION};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(ContextCompat.checkSelfPermission(getContext(),FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
+                if(ContextCompat.checkSelfPermission(getContext(),COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED)
+                {
+                    mCurrentPermissionGranted = true;
+                    showMyLocation();
+                    initMap();
+                }
+                else ActivityCompat.requestPermissions(getActivity(),permissions,REQUEST_CODE_PERMISSION_MAP);
+            }
+            else ActivityCompat.requestPermissions(getActivity(),permissions,REQUEST_CODE_PERMISSION_MAP);
+        }
+        else
+        {
+            mCurrentPermissionGranted = true;
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==44 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
+        if(requestCode==REQUEST_CODE_PERMISSION_MAP)
         {
-            showMyLocation();
+            if(grantResults.length>0){
+                for (int i = 0; i <grantResults.length ; i++) {
+                    if(grantResults[i]!=PackageManager.PERMISSION_GRANTED)
+                        mCurrentPermissionGranted = false;
+                        return;
+                }
+            }
+            mCurrentPermissionGranted = true;
+            initMap();
         }
+
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

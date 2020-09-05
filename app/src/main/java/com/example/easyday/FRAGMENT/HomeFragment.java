@@ -3,6 +3,7 @@ package com.example.easyday.FRAGMENT;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +40,8 @@ import com.example.easyday.CONTROL.HelpersServiceThemes;
 import com.example.easyday.CONTROL.SendTheme;
 import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.R;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
@@ -48,12 +51,14 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.google.android.gms.common.ConnectionResult.SUCCESS;
+
 
 public class HomeFragment extends Fragment {
     ImageView imageViewTheme;
     ToggleButton buttonFlashLight;
     final int REQUEST_CODE_FLASHLIGHT = 10;
-
+    final String TAG = this.getClass().getName();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,7 +84,13 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.bt_Map).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(requireActivity(), MapActivity.class) );
+                if(isServiceGoogle())
+                    try {
+                        startActivity(new Intent(requireActivity(), MapActivity.class) );
+                    }catch (Exception e){
+
+                    }
+
             }
         });
         return view;
@@ -190,5 +201,24 @@ public class HomeFragment extends Fragment {
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
+    private Boolean isServiceGoogle()
+    {
+        Log.d(getTAG(),"Checking service google...");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(getContext());
+        if(available==SUCCESS){
+            Log.d(getTAG(),"Service google is Ok");
+            return true;
+        }else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            Log.d(getTAG(),"An error occurred but we can fix it");
+            Dialog dialog =GoogleApiAvailability.getInstance().getErrorDialog((Activity) getContext(), available,33 );
+            dialog.show();
+        }
+        else TOOL.setToast(getContext(), "You can't make map request");
 
+        return false;
+    }
+
+    public String getTAG() {
+        return TAG;
+    }
 }
