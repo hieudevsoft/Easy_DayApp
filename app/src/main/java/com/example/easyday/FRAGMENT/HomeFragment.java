@@ -34,6 +34,8 @@ import com.bumptech.glide.Glide;
 import com.example.easyday.ACTIVITY.MapActivity;
 import com.example.easyday.ACTIVITY.ToDoListActivity;
 import com.example.easyday.CLASS.FlashLightClass;
+import com.example.easyday.CONTROL.HelpersService;
+import com.example.easyday.CONTROL.HelpersServiceThemes;
 import com.example.easyday.CONTROL.SendTheme;
 import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.R;
@@ -51,21 +53,19 @@ public class HomeFragment extends Fragment {
     ImageView imageViewTheme;
     ToggleButton buttonFlashLight;
     final int REQUEST_CODE_FLASHLIGHT = 10;
-    final static String urlWebserviceInsert = "https://easayday.000webhostapp.com/insertDataTheme.php";
-    final static String urlWebserviceGetData = "https://easayday.000webhostapp.com/getDataTheme.php";
-    final static String urlWebserviceUpdate = "https://easayday.000webhostapp.com/updateDataTheme.php";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         imageViewTheme = view.findViewById(R.id.image_Theme_Home);
         buttonFlashLight = view.findViewById(R.id.bt_flashlight);
-        getDataFromServer(urlWebserviceGetData);
+        getDataFromServer(HelpersServiceThemes.getUrlWebserviceGetData());
         SendTheme viewModel = ViewModelProviders.of(requireActivity()).get(SendTheme.class);
         viewModel.getUri().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String uri) {
-                updateData(FirebaseAuth.getInstance().getCurrentUser().getUid().concat("theme"), uri, urlWebserviceUpdate, getContext());
+                HelpersServiceThemes.updateData(FirebaseAuth.getInstance().getCurrentUser().getUid().concat("theme"), uri, HelpersServiceThemes.getUrlWebserviceUpdate(), getContext());
                 imageViewTheme.setImageBitmap(TOOL.convertStringToBitmap(uri));
             }
         });
@@ -122,9 +122,7 @@ public class HomeFragment extends Fragment {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.trim().equals("success"))
-                    Toast.makeText(getContext(), "insert done", Toast.LENGTH_LONG).show();
-                else Toast.makeText(getContext(), "insert failure" , Toast.LENGTH_LONG).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -169,7 +167,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                if(!checkID) insertData(id, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/1200px-Black_colour.jpg", urlWebserviceInsert);
+                if(!checkID) insertData(id, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/1200px-Black_colour.jpg", HelpersServiceThemes.getUrlWebserviceInsert());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -178,31 +176,6 @@ public class HomeFragment extends Fragment {
             }
         });
         requestQueue.add(jsonArrayRequest);
-    }
-    private static void updateData(final String id, final String urlTheme,String url,Context context)
-    {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if(response.trim().equals("success"))
-                    Log.d("TAG","Done update~");
-                else Log.d("TAG","Failure update~");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("idThemeUser",id);
-                map.put("urlThemeUser", urlTheme);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

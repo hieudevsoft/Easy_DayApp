@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.easyday.ADAPTER.RecyclerAdapterMainNote;
 import com.example.easyday.CONTROL.HelpersService;
+import com.example.easyday.CONTROL.SendListNote;
 import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.ENTITY.Note;
 import com.example.easyday.R;
@@ -29,31 +34,33 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainNoteFragment extends Fragment {
     RecyclerAdapterMainNote recyclerAdapterMainNote;
     List<Note> listNotes;
-    List<Note> listNotesTemp;
+    List<Note> listNotesTempAllList;
     RecyclerView recyclerNotes;
     TextInputEditText edt_search_note;
     FloatingActionButton bt_addNode;
     MediaPlayer mediaPlayer;
     Chip chip_low, chip_high;
     ChipGroup chipGroup;
-
+    final static String TAG = "MainNoteFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext()).inflate(R.layout.main_note_layout, null);
-        listNotesTemp = new ArrayList<>();
-
+        listNotesTempAllList = new ArrayList<>();
+        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.getUrlGetNoteFromService(), FirebaseAuth.getInstance().getCurrentUser().getUid());
         return view;
     }
 
     @Override
     public void onResume() {
-        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.urlGetNoteFromService, FirebaseAuth.getInstance().getCurrentUser().getUid(), recyclerAdapterMainNote, listNotes,listNotesTemp,-1);
+
         super.onResume();
     }
 
@@ -61,6 +68,16 @@ public class MainNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mapping();
         initComponents();
+        SendListNote sendListNote = ViewModelProviders.of((FragmentActivity) getContext()).get(SendListNote.class);
+        sendListNote.getListNote().observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> noteList) {
+                listNotes.clear();
+                listNotes.addAll(noteList);
+                listNotesTempAllList.addAll(listNotes);
+                recyclerAdapterMainNote.notifyDataSetChanged();
+            }
+        });
         edt_search_note.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -69,7 +86,7 @@ public class MainNoteFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            filter(s);
+                filter(s);
 
             }
 
@@ -85,14 +102,38 @@ public class MainNoteFragment extends Fragment {
     }
 
     private void controlSortList() {
+
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
                 if (chip_high.isChecked()) {
-                    HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.urlGetNoteFromService, FirebaseAuth.getInstance().getCurrentUser().getUid(), recyclerAdapterMainNote, listNotes,listNotesTemp,1);
+                    if(listNotes.size()>0)
+                        Collections.sort(listNotes, new Comparator<Note>() {
+                            @Override
+                            public int compare(Note o1, Note o2) {
+                                if(o1.getLevel()>o2.getLevel())
+                                    return -1;else
+                                if(o1.getLevel()<o2.getLevel())
+                                    return 1;else
+                                    return 0;
+                            }
+                        });
+                    recyclerAdapterMainNote.notifyDataSetChanged();
                 } else if (chip_low.isChecked()) {
-                    HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.urlGetNoteFromService, FirebaseAuth.getInstance().getCurrentUser().getUid(), recyclerAdapterMainNote, listNotes,listNotesTemp,0);
-                } else HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.urlGetNoteFromService, FirebaseAuth.getInstance().getCurrentUser().getUid(), recyclerAdapterMainNote, listNotes,listNotesTemp,-1);
+                    if(listNotes.size()>0)
+                        Collections.sort(listNotes, new Comparator<Note>() {
+                            @Override
+                            public int compare(Note o1, Note o2) {
+                                if(o1.getLevel()>o2.getLevel())
+                                    return 1;else
+                                if(o1.getLevel()<o2.getLevel())
+                                    return -1;else
+                                    return 0;
+                            }
+                        });
+                    recyclerAdapterMainNote.notifyDataSetChanged();
+                }
+
             }
         });
     }
@@ -145,17 +186,22 @@ public class MainNoteFragment extends Fragment {
         chip_high = getView().findViewById(R.id.chip_high);
         chipGroup = getView().findViewById(R.id.chip_priority_group);
     }
-    private void filter(CharSequence s)
-    {
-          listNotes.clear();
-                if(s.toString().length()==0)
-    {
-        listNotes.addAll(listNotesTemp);
-    }else{
-        for(Note note : listNotesTemp)
-            if(note.getTitle().trim().contains(s.toString()))
-                listNotes.add(note);
+
+    private void filter(CharSequence s) {
+        Log.d(getTAG(),"ListnoteTempAllist: " + listNotes.size()+"");
+        listNotes.clear();
+        if (s.toString().length() == 0) {
+            listNotes.addAll(listNotesTempAllList);
+        } else {
+            for (Note note : listNotesTempAllList)
+                if (note.getTitle().toLowerCase().trim().contains(s.toString().toLowerCase()))
+                    listNotes.add(note);
+        }
+        Log.d(getTAG(),"Listnote: " + listNotes.size()+"");
+        recyclerAdapterMainNote.notifyDataSetChanged();
     }
-                recyclerAdapterMainNote.notifyDataSetChanged();
+
+    public static String getTAG() {
+        return TAG;
     }
 }

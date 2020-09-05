@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +77,7 @@ public class SetNoteFragment extends Fragment {
     final int PICK_IMAGE_NOTE = 5;
     final int REQUEST_PICK_IMAGE_NOTE = 6;
 
+    final static String TAG="SetNoteFragment";
 
     @Nullable
     @Override
@@ -223,8 +225,11 @@ public class SetNoteFragment extends Fragment {
         } else {
             int level = spinner.getSelectedItemPosition() + 1;
             if (imageNoteList.size() != 0) {
+                Log.d(TAG, "ImageNoteList size != 0" );
                 if (imageNoteList.size() < sizeImagenote) {
+                    Log.d(TAG, "imaNotelist size < sizeImagenote" );
                     int distance = sizeImagenote - imageNoteList.size();
+                    Log.d(TAG, "distance = " + distance + "" );
                     while (distance > 0) {
                         sizeImagenote--;
                         HelpersService.deleteImageNoteByPosition(getContext(), idUser.concat(idNote).concat("_").concat(sizeImagenote + ""));
@@ -234,50 +239,60 @@ public class SetNoteFragment extends Fragment {
                         if (i == 0)
                         {
                             if(sizeImagenote!=0)
-                            updateNote(HelpersService.urlUpdateDataFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
+                            updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
                                     TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
-                            else insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
+                            else insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
                                     TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
                         }
                         else {
                             if(sizeImagenote!=0)
-                            updateNote(HelpersService.urlUpdateDataFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                            updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                     TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
-                            else insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                            else insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                     TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
                         }
                 } else {
+                    Log.d(TAG, "imaNotelist size >= sizeImagenote" );
                     for (int i = 0; i < imageNoteList.size(); i++)
                         if (i == 0)
                         {
-                            if(sizeImagenote!=0)
-                                updateNote(HelpersService.urlUpdateDataFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
+                            if(sizeImagenote!=0){
+                                Log.d(getTAG(), "sizeImagenote != 0 ");
+                                updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                         TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
+                            }
                             else
                             {
-                                insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
+                                Log.d(getTAG(), "sizeImagenote == 0 ");
+                                insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                         TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
                             }
                         }
                         else {
                             if(sizeImagenote>0&&i<sizeImagenote)
-                                updateNote(HelpersService.urlUpdateDataFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                                updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                         TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
-                            else insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                            else insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                     TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
                         }
 
                 }
             } else {
+                Log.d(getTAG(), "imageList = 0");
                 try {
-                    HelpersService.deleteImageNoteByPosition(getContext(),user.getUid().concat(idNote).concat("_0"));
+                    int distance = sizeImagenote - imageNoteList.size();
+                    while (distance > 0) {
+                        sizeImagenote--;
+                        HelpersService.deleteImageNoteByPosition(getContext(), idUser.concat(idNote).concat("_").concat(sizeImagenote + ""));
+                        distance--;
+                    }
                 }catch (Exception e)
                 {
 
                 }
-                updateNote(HelpersService.urlUpdateDataFromService, user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
-                        , "", level, getContext());
             }
+            updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
+                    , "", level, getContext());
             mediaPlayerDone = MediaPlayer.create(getContext(), R.raw.done);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -289,17 +304,14 @@ public class SetNoteFragment extends Fragment {
             }, 1000);
             mediaPlayerDone.start();
         }
-
     }
+
     public static void updateNote(String urlWebService, final String id, final String title, final String content, final String image, final String description, final int level, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlWebService, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if (response.trim().equals("success"))
-                    Toast.makeText(context, "Update your note successful~", Toast.LENGTH_LONG).show();
-                else
-                    Toast.makeText(context, "Update your note failure " + response, Toast.LENGTH_LONG).show();
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -320,6 +332,7 @@ public class SetNoteFragment extends Fragment {
         };
         requestQueue.add(stringRequest);
     }
+
     public static void insertNote(String urlWebService, final String id, final String title, final String content, final String image, final String description, final int level, final Context context) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlWebService, new Response.Listener<String>() {
@@ -357,7 +370,7 @@ public class SetNoteFragment extends Fragment {
             edt_title.setError("It's mandatory");
             edt_title.requestFocus();
         } else {
-            HelpersService.checkIdNote(getContext(), HelpersService.urlGetNoteFromService, user.getUid(), edt_idNote.getText().toString().trim(),edt_idNote);
+            HelpersService.checkIdNote(getContext(), HelpersService.getUrlDeleteNoteFromService(), user.getUid(), edt_idNote.getText().toString().trim(),edt_idNote);
             SendCheckIdNote sendCheckIdNote = ViewModelProviders.of((FragmentActivity) getContext()).get(SendCheckIdNote.class);
             sendCheckIdNote.getCheckId().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                 @Override
@@ -371,15 +384,15 @@ public class SetNoteFragment extends Fragment {
                         String contentNote = edt_content.getText().toString().trim();
                          if (!idNote.contains("_")) {
                              int level = spinner.getSelectedItemPosition() + 1;
-                             insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
+                             insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
                                      , "", level, getContext());
                             if (imageNoteList.size() != 0)
                                 for (int i = 0; i < imageNoteList.size(); i++)
                                     if (i == 0)
-                                        insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
+                                        insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
                                                 TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
                                     else
-                                        insertNote(HelpersService.urlInsertNoteFromService, user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                                        insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                                 TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
 
                 mediaPlayerDone = MediaPlayer.create(getContext(), R.raw.done);
@@ -401,6 +414,7 @@ public class SetNoteFragment extends Fragment {
             });
         }
     }
+
     private void mapping() {
         bt_done_note = getView().findViewById(R.id.bt_done_note);
         bt_back_note = getView().findViewById(R.id.bt_back_note);
@@ -431,8 +445,9 @@ public class SetNoteFragment extends Fragment {
             }
         });
         dialog.show();
-
     }
 
-
+    public static String getTAG() {
+        return TAG;
+    }
 }

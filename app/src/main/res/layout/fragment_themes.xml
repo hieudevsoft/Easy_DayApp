@@ -11,6 +11,7 @@
         android:layout_marginBottom="75dp"
         app:maxImageSize="35dp"
         app:fabSize="normal"
+        app:borderWidth="0dp"
         android:backgroundTint="@color/colorNavIcon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

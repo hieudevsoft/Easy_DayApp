@@ -18,12 +18,18 @@
         android:roundIcon="@drawable/splash_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ACTIVITY.MapActivity"></activity>
-        <activity android:name=".ACTIVITY.ToDoListActivity" />
-        <activity android:name=".ACTIVITY.HomeScreen" />
-        <activity android:name=".ACTIVITY.Welcome.SignUpActivity" />
-        <activity android:name=".ACTIVITY.Welcome.SignInActivity" />
-        <activity android:name=".ACTIVITY.SplashActivity">
+        <activity android:name=".ACTIVITY.MapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ACTIVITY.ToDoListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ACTIVITY.HomeScreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ACTIVITY.Welcome.SignUpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ACTIVITY.Welcome.SignInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".ACTIVITY.SplashActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

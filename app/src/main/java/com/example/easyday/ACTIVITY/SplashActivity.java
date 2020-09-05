@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         TOOL.setAnimation(imgView_Splash, this,R.anim.anim_spash_top_to_bottom );
         TOOL.setAnimation(tv_Bottom_Splash, this,R.anim.anim_splash_bottom_to_top );
         TOOL.setAnimation(tv_SplashAppName, this,R.anim.anim_left_to_right );
-        TOOL.setTimeHideView(progressBar, 5000);
+        TOOL.setTimeHideView(progressBar, 4000);
         move();
     }
 
@@ -54,6 +54,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent,options.toBundle() );
 
             }
-        }, 5500);
+        }, 4000);
     }
 }

@@ -183,7 +183,6 @@
                 app:boxBackgroundMode="outline"
                 app:boxStrokeColor="#FF5722"
                 app:boxStrokeWidth="0.5dp"
-                app:endIconMode="clear_text"
                 app:endIconTint="@color/colorNavIcon"
                 app:endIconTintMode="src_atop"
                 app:startIconDrawable="@drawable/ic_email">

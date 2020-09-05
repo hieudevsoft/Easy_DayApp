@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 
 import com.example.easyday.ENTITY.ImageNote;
@@ -31,6 +32,8 @@ import com.example.easyday.FRAGMENT.HomeFragment;
 import com.example.easyday.FRAGMENT.MeFragment;
 import com.example.easyday.FRAGMENT.ThemesFragment;
 import com.example.easyday.ENTITY.Note;
+
+
 
 public class TOOL {
 

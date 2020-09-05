@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,13 +35,45 @@ import java.util.List;
 import java.util.Map;
 
 public class HelpersService {
-    public final static String urlInsertNoteFromService = "https://easayday.000webhostapp.com/insertDataNote.php";
-    public final static String urlGetNoteFromService ="https://easayday.000webhostapp.com/getDataNote.php";
-    public final static String urlUpdateDataFromService ="https://easayday.000webhostapp.com/updateDataNote.php";
-    public final static String urlDeleteNoteFromService ="https://easayday.000webhostapp.com/deleteDataNote.php";
+    private static String urlInsertNoteFromService = "https://easayday.000webhostapp.com/insertDataNote.php";
+    private static String urlGetNoteFromService ="https://easayday.000webhostapp.com/getDataNote.php";
+    private static String urlUpdateDataFromService ="https://easayday.000webhostapp.com/updateDataNote.php";
+    private static String urlDeleteNoteFromService ="https://easayday.000webhostapp.com/deleteDataNote.php";
 
-    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser, final RecyclerAdapterMainNote recyclerAdapterMainNote, final List<Note> noteList,final List<Note> noteListTemp, final int sort) {
-        noteList.clear();
+    public static String getUrlInsertNoteFromService() {
+        return urlInsertNoteFromService;
+    }
+
+    public static void setUrlInsertNoteFromService(String urlInsertNoteFromService) {
+        HelpersService.urlInsertNoteFromService = urlInsertNoteFromService;
+    }
+
+    public static String getUrlGetNoteFromService() {
+        return urlGetNoteFromService;
+    }
+
+    public static void setUrlGetNoteFromService(String urlGetNoteFromService) {
+        HelpersService.urlGetNoteFromService = urlGetNoteFromService;
+    }
+
+    public static String getUrlUpdateDataFromService() {
+        return urlUpdateDataFromService;
+    }
+
+    public static void setUrlUpdateDataFromService(String urlUpdateDataFromService) {
+        HelpersService.urlUpdateDataFromService = urlUpdateDataFromService;
+    }
+
+    public static String getUrlDeleteNoteFromService() {
+        return urlDeleteNoteFromService;
+    }
+
+    public static void setUrlDeleteNoteFromService(String urlDeleteNoteFromService) {
+        HelpersService.urlDeleteNoteFromService = urlDeleteNoteFromService;
+    }
+
+    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser) {
+        final List<Note> noteList = new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -97,40 +130,8 @@ public class HelpersService {
                         TOOL.setToast(context, "Failure get object by id");
                     }
                 }
-                noteListTemp.addAll(noteList);
-                if(sort>=0){
-                    switch (sort)
-                    {
-                        case 0:
-                            if(noteList.size()>0)
-                            Collections.sort(noteList, new Comparator<Note>() {
-                                @Override
-                                public int compare(Note o1, Note o2) {
-                                    if(o1.getLevel()>o2.getLevel())
-                                        return 1;else
-                                            if(o1.getLevel()<o2.getLevel())
-                                                return -1;else
-                                    return 0;
-                                }
-                            });
-                            break;
-                        case 1:
-                            if(noteList.size()>0)
-                            Collections.sort(noteList, new Comparator<Note>() {
-                                @Override
-                                public int compare(Note o1, Note o2) {
-                                    if(o1.getLevel()>o2.getLevel())
-                                        return -11;else
-                                    if(o1.getLevel()<o2.getLevel())
-                                        return 1;else
-                                        return 0;
-                                }
-                            });
-                            break;
-                    }
-                }
-
-                recyclerAdapterMainNote.notifyDataSetChanged();
+                SendListNote sendListNote = ViewModelProviders.of((FragmentActivity) context).get(SendListNote.class);
+                sendListNote.getListNote().postValue(noteList);
             }
 
         }, new Response.ErrorListener() {
@@ -183,12 +184,11 @@ public class HelpersService {
     public static void deleteImageNoteByPosition(final Context context,final String id)
     {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(Request.Method.POST, urlDeleteNoteFromService, new Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.POST, getUrlDeleteNoteFromService(), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                if(response.trim().equals("success"))
-                    TOOL.setToast(context, "Deleted Successful~");
-                else TOOL.setToast(context, "Deleted failure!! " +response);
+
+
             }
         }, new Response.ErrorListener() {
             @Override

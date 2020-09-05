@@ -62,31 +62,30 @@ public class RecyclerAdapterMainNote extends RecyclerView.Adapter<RecyclerAdapte
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String idNote = listNote.get(position).getIdNote();
-                        try{
+                            String idNote = listNote.get(position).getIdNote();
+                            if(listNote.get(position).getImgNotes().size()!=0)
                             for(int i = 0; i < listNote.get(position).getImgNotes().size();i++)
                             {
                                 HelpersService.deleteImageNoteByPosition(context, idNote.concat(i+""));
+                            }else  {
+                                HelpersService.deleteImageNoteByPosition(context, idNote);
                             }
 
-                        }
-                        catch (Exception e)
-                        {
-                            HelpersService.deleteImageNoteByPosition(context, idNote);
-                        }
+
+
                         listNote.remove(position);
+                        notifyDataSetChanged();
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+
+
                     }
                 });
-
                 builder.show();
-                notifyDataSetChanged();
-                return true;
+                return false;
             }
         });
         holder.itemView.setOnClickListener(new View.OnClickListener() {

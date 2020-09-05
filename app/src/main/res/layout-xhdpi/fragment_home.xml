@@ -36,8 +36,8 @@
                     <ToggleButton
                         android:layout_margin="10dp"
                         android:id="@+id/bt_flashlight"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:background="@drawable/custom_flashlight"
                         android:textOff=""
                         android:textOn=""
@@ -57,8 +57,8 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/notepad"
                         android:id="@+id/bt_addNote"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"/>
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_marginStart="30dp"
@@ -73,8 +73,8 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/map"
                         android:id="@+id/bt_Map"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"/>
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"/>
                 </LinearLayout>
             </RelativeLayout>
 

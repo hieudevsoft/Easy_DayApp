@@ -183,14 +183,13 @@
             app:boxBackgroundMode="outline"
             app:boxStrokeColor="#FF5722"
             app:boxStrokeWidth="0.5dp"
-            app:endIconMode="clear_text"
             app:endIconTint="@color/colorNavIcon"
             app:endIconTintMode="src_atop"
             app:startIconDrawable="@drawable/ic_email">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_email_me"
-            android:textSize="18sp"
+                android:textSize="18sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helveticaneue_light"

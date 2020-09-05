@@ -34,7 +34,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.easyday.ADAPTER.ThemeAdpater;
+import com.example.easyday.ADAPTER.ThemeAdapter;
+import com.example.easyday.CONTROL.HelpersServiceThemes;
 import com.example.easyday.CONTROL.SendTheme;
 import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.R;
@@ -47,11 +48,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.theartofdev.edmodo.cropper.CropImage;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -67,14 +63,16 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
     static List<String> listThemes = new ArrayList<>();
     FloatingActionButton floatingButtonAdd;
     GridView gridView;
-    static ThemeAdpater themeAdapter;
+    static ThemeAdapter themeAdapter;
     final int PICK_IMAGE = 111;
     private SendTheme viewModel;
     private static FirebaseUser user;
     private DatabaseReference db;
-    final static String urlWebserviceGetData = "https://easayday.000webhostapp.com/getDataTheme.php";
-    final static String urlWebserviceInsert = "https://easayday.000webhostapp.com/insertDataTheme.php";
-    final static String urlWebserviceUpdate = "https://easayday.000webhostapp.com/updateDataTheme.php";
+
+    public static FirebaseUser getUser() {
+        return user;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,23 +81,12 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
         floatingButtonAdd = view.findViewById(R.id.floatingActionButton);
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseDatabase.getInstance().getReference("Themes").child(user.getUid());
-        themeAdapter = new ThemeAdpater(listThemes, getContext(),getActivity());
+        themeAdapter = new ThemeAdapter(listThemes, getContext(),getActivity());
         gridView.setAdapter(themeAdapter);
-        getDataFromServer(urlWebserviceGetData);
-        gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), "Long Click", Toast.LENGTH_LONG).show();
-                return true;
-            }
-        });
+        HelpersServiceThemes.getDataFromServer(HelpersServiceThemes.getUrlWebserviceGetData(), user, listThemes, themeAdapter, getContext());
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
 
     @Override
     public void onResume() {
@@ -116,7 +103,6 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
             }
         });
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,7 +125,7 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
                     listThemes.add(TOOL.convertBitMapToString(bitmap));
                     for(String uri:listThemes)
                         stringBuilder.append(uri+",");
-                    updateData(user.getUid(), stringBuilder.toString(), urlWebserviceUpdate,getContext());
+                    HelpersServiceThemes.updateData(user.getUid(), stringBuilder.toString(), HelpersServiceThemes.getUrlWebserviceUpdate(),getContext());
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -151,113 +137,5 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
         }
 
     }
-    public static void setOnLongClickItem(final int position, final Context context) {
-                final AlertDialog.Builder deleteTheme = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.Theme_AppCompat_DayNight_Dialog));
-                deleteTheme.setTitle("Question?");
-                deleteTheme.setMessage("Do you want remove theme?");
-                deleteTheme.setIcon(R.drawable.ic_themes_me);
-                deleteTheme.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        listThemes.remove(position);
-                        for (String uri : listThemes)
-                            stringBuilder.append(uri + ",");
-                        updateData(user.getUid(), stringBuilder.toString(), urlWebserviceUpdate,context);
-                        themeAdapter.notifyDataSetChanged();
-                    }
-                });
-                deleteTheme.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                deleteTheme.show();
-    }
-    private void getDataFromServer(final String url)
-    {
-        listThemes.clear();
-        final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                boolean checkID = false;
-                for(int i = 0; i < response.length();i++)
-                {
-                    try {
-                        JSONObject jsonObject = response.getJSONObject(i);
-                        if(jsonObject.getString("ID").equals(user.getUid()))
-                        {
-                            checkID = true;
-                            String temp =jsonObject.getString("URLTHEME");
-                            for(String uri:temp.split(","))
-                                if(uri.length()>1)
-                                listThemes.add(uri);
-                            themeAdapter.notifyDataSetChanged();
-                            break;
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(!checkID) insertData(user.getUid(), "", urlWebserviceInsert);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "Disconnect to Localhost", Toast.LENGTH_SHORT).show();
-            }
-        });
-        requestQueue.add(jsonArrayRequest);
-    }
-    private void insertData(final String id, final String urlTheme, String url)
-    {
-        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("idThemeUser",id);
-                map.put("urlThemeUser", urlTheme);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-    private static void updateData(final String id, final String urlTheme,String url,Context context)
-    {
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if(response.trim().equals("success"))
-                    Log.d("TAG","Done update~");
-                else Log.d("TAG","Failure update~");
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<>();
-                map.put("idThemeUser",id);
-                map.put("urlThemeUser", urlTheme);
-                return map;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
-
 
 }
