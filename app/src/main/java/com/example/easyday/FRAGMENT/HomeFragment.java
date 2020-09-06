@@ -32,8 +32,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.easyday.ACTIVITY.AlarmActivity;
 import com.example.easyday.ACTIVITY.MapActivity;
 import com.example.easyday.ACTIVITY.ToDoListActivity;
+import com.example.easyday.ACTIVITY.WeatherActivity;
 import com.example.easyday.CLASS.FlashLightClass;
 import com.example.easyday.CONTROL.HelpersService;
 import com.example.easyday.CONTROL.HelpersServiceThemes;
@@ -50,6 +52,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
@@ -57,6 +60,7 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 public class HomeFragment extends Fragment {
     ImageView imageViewTheme;
     ToggleButton buttonFlashLight;
+
     final int REQUEST_CODE_FLASHLIGHT = 10;
     final String TAG = this.getClass().getName();
     @Override
@@ -90,7 +94,18 @@ public class HomeFragment extends Fragment {
                     }catch (Exception e){
 
                     }
-
+            }
+        });
+        view.findViewById(R.id.bt_Weather).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(requireActivity(), WeatherActivity.class));
+            }
+        });
+        view.findViewById(R.id.bt_Alarm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(requireActivity(), AlarmActivity.class));
             }
         });
         return view;
@@ -178,7 +193,7 @@ public class HomeFragment extends Fragment {
                     }
                 }
 
-                if(!checkID) insertData(id, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Black_colour.jpg/1200px-Black_colour.jpg", HelpersServiceThemes.getUrlWebserviceInsert());
+                if(!checkID) insertData(id, "https://p0.pikrepo.com/preview/580/401/white-wall-with-black-line.jpg", HelpersServiceThemes.getUrlWebserviceInsert());
             }
         }, new Response.ErrorListener() {
             @Override

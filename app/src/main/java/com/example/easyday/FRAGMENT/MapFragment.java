@@ -8,6 +8,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -55,6 +56,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     public void setSearchView(SearchView searchView) {
         this.searchView = searchView;
     }
+    final static String TAG="MapFragment";
 
     public MapFragment() {
         this.listPoint = new ArrayList<>();
@@ -63,6 +65,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
     public void getStarted()
     {
+        Log.d(TAG,"request permission...");
         requestPermissionLocation();
     }
 
@@ -82,6 +85,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setZoomGesturesEnabled(true);
         map.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(true);
+        Log.d(TAG,"On map ready: " + mCurrentPermissionGranted);
         if(mCurrentPermissionGranted) {
             showMyLocation();
         }
@@ -138,16 +142,17 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
                                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
                             }catch (Exception e)
                             {
-                                TOOL.setToast(getContext(), "Reload map...");
+                                TOOL.setToast(getContext(), "Reload Google Map...");
                             }
 
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }}
+                }
+                }
                 else {
-                    TOOL.setToast(getContext(), "Reset map to get your location ~");
+                    TOOL.setToast(getContext(), "An occurred while initializing Google Map...");
                     getActivity().finish();
                 }
                 return false;
@@ -162,8 +167,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     @SuppressLint("MissingPermission")
     private void showMyLocation() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-
             try {
+                Log.d(TAG,"Show my location : " + mCurrentPermissionGranted);
                 if (mCurrentPermissionGranted) {
                     fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
                         @Override
@@ -199,9 +204,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     {
         String [] permissions = {FINE_LOCATION,COARSE_LOCATION};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.d(TAG,"Check permission");
             if(ContextCompat.checkSelfPermission(getContext(),FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
                 if(ContextCompat.checkSelfPermission(getContext(),COARSE_LOCATION)==PackageManager.PERMISSION_GRANTED)
                 {
+                    Log.d(TAG,"Check permission access");
                     mCurrentPermissionGranted = true;
                     showMyLocation();
                     initMap();
@@ -218,12 +225,14 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode==REQUEST_CODE_PERMISSION_MAP)
         {
             if(grantResults.length>0){
                 for (int i = 0; i <grantResults.length ; i++) {
                     if(grantResults[i]!=PackageManager.PERMISSION_GRANTED)
                         mCurrentPermissionGranted = false;
+                    Log.d(TAG,"denided permission");
                         return;
                 }
             }
@@ -232,6 +241,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         }
 
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
     }
 }

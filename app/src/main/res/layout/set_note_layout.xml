@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/custom_card_me"
             android:backgroundTint="#F1C161"
-            android:fontFamily="@font/helveticaneue_light"
+            android:fontFamily="@font/notosans"
             android:inputType="textMultiLine"
             android:padding="11dp"
             android:textSize="20sp" />
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/custom_card_me"
             android:backgroundTint="#E8EFEE"
-            android:fontFamily="@font/helveticaneue_light"
+            android:fontFamily="@font/lato_regular"
             android:inputType="textMultiLine"
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/custom_card_me"
             android:backgroundTint="#63635E"
-            android:fontFamily="@font/helveticaneue_light"
+            android:fontFamily="@font/notosans"
             android:inputType="textMultiLine"
             android:padding="11dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"

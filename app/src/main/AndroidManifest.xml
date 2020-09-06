@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -18,17 +18,25 @@
         android:roundIcon="@drawable/splash_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ACTIVITY.MapActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".ACTIVITY.ToDoListActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".ACTIVITY.HomeScreen"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".ACTIVITY.Welcome.SignUpActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".ACTIVITY.Welcome.SignInActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-        <activity android:name=".ACTIVITY.SplashActivity"
+        <activity android:name=".ACTIVITY.AlarmActivity"></activity>
+        <activity android:name=".ACTIVITY.WeatherActivity" />
+        <activity
+            android:name=".ACTIVITY.MapActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.ToDoListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.HomeScreen"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.Welcome.SignUpActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.Welcome.SignInActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
