@@ -1,4 +1,4 @@
-package com.example.easyday.FRAGMENT;
+package com.example.easyday.FRAGMENT.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;

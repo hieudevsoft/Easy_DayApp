@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    android:background="@drawable/custom_back_ground_splash_music"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FRAGMENT.music.SplashMusicFragment">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/music"
+        android:layout_width="140dp"
+        android:layout_height="140dp"/>
+     <TextView
+         android:fontFamily="@font/helveticaneue_light"
+         android:textStyle="bold|italic"
+         android:textColor="@color/colorTextWhite"
+         android:textSize="24sp"
+         android:layout_marginTop="20dp"
+         android:text="Free Play Music"
+         android:layout_gravity="center_horizontal"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+</FrameLayout>

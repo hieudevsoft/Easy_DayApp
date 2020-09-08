@@ -20,9 +20,8 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easyday.CONTROL.HelpersService;
-import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.ENTITY.Note;
-import com.example.easyday.FRAGMENT.MainNoteFragmentDirections;
+import com.example.easyday.FRAGMENT.note.MainNoteFragmentDirections;
 import com.example.easyday.R;
 import com.google.android.material.textview.MaterialTextView;
 

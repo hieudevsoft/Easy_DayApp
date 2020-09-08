@@ -1,4 +1,4 @@
-package com.example.easyday.FRAGMENT;
+package com.example.easyday.FRAGMENT.home;
 
 import android.app.AlertDialog;
 import android.content.Context;

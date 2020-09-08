@@ -18,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 
 import com.example.easyday.ENTITY.ImageNote;
@@ -28,11 +27,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.easyday.FRAGMENT.HomeFragment;
-import com.example.easyday.FRAGMENT.MeFragment;
-import com.example.easyday.FRAGMENT.ThemesFragment;
+import com.example.easyday.FRAGMENT.home.HomeFragment;
+import com.example.easyday.FRAGMENT.me.MeFragment;
+import com.example.easyday.FRAGMENT.home.ThemesFragment;
 import com.example.easyday.ENTITY.Note;
 
+import jp.wasabeef.blurry.Blurry;
 
 
 public class TOOL {
@@ -152,5 +152,9 @@ public class TOOL {
         note.setIdNote(idNote);
         note.setImgNotes(imageNote);
         return note;
+    }
+    public static void setBlurForImageView(Context context,ImageView imageView,Bitmap bitmap,int blur)
+    {
+        Blurry.with(context).radius(blur).sampling(10).from(bitmap).into(imageView);
     }
 }

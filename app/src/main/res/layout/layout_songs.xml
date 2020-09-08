@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/mainLayoutSongs"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:background="@drawable/custom_card_me"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:src="@drawable/music"
+        android:id="@+id/image_Song"
+        android:layout_width="60dp"
+        android:layout_height="60dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_toEndOf="@id/image_Song"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:id="@+id/title_songs"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/lato_regular"
+                android:maxLength="50"
+                android:text="This is title songs"
+                android:textColor="@color/colorTextBlack"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/artist_songs"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/lato_regular"
+                android:maxLength="50"
+                android:text="This is artist"
+                android:textColor="@color/colorTextBlackAlpha"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

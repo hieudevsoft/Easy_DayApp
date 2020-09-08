@@ -1,4 +1,4 @@
-package com.example.easyday.FRAGMENT;
+package com.example.easyday.FRAGMENT.home;
 
 import android.Manifest;
 import android.app.Activity;
@@ -33,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.easyday.ACTIVITY.AlarmActivity;
+import com.example.easyday.ACTIVITY.MakeListMusicActivity;
 import com.example.easyday.ACTIVITY.MapActivity;
 import com.example.easyday.ACTIVITY.ToDoListActivity;
 import com.example.easyday.ACTIVITY.WeatherActivity;
@@ -60,7 +61,6 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 public class HomeFragment extends Fragment {
     ImageView imageViewTheme;
     ToggleButton buttonFlashLight;
-
     final int REQUEST_CODE_FLASHLIGHT = 10;
     final String TAG = this.getClass().getName();
     @Override
@@ -106,6 +106,12 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(requireActivity(), AlarmActivity.class));
+            }
+        });
+        view.findViewById(R.id.bt_XO).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(requireActivity(), MakeListMusicActivity.class));
             }
         });
         return view;

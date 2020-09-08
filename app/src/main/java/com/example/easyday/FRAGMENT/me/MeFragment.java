@@ -1,4 +1,4 @@
-package com.example.easyday.FRAGMENT;
+package com.example.easyday.FRAGMENT.me;
 
 import android.app.Activity;
 import android.content.Context;

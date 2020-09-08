@@ -1,28 +1,23 @@
 package com.example.easyday.ACTIVITY;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.easyday.CONTROL.TOOL;
-import com.example.easyday.FRAGMENT.MapFragment;
+import com.example.easyday.FRAGMENT.home.MapFragment;
 import com.example.easyday.R;
 
 public class MapActivity extends AppCompatActivity {
@@ -52,7 +47,9 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         checkGPSDevice();
+        Log.d("MapFragment","Resume  ...." + "GPS: " + getCheckGPSDevice());
         if(getCheckGPSDevice()){
+            Log.d("MapFragment","Map on ....");
             openMap();
         }
         super.onResume();
@@ -113,6 +110,7 @@ public class MapActivity extends AppCompatActivity {
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch(Exception ex) {}
+        Log.d("MapFragment","GPS : " + gps_enabled + " networkEnnabled: " + network_enabled );
         if(gps_enabled&&network_enabled) return true;
         else return false;
     }

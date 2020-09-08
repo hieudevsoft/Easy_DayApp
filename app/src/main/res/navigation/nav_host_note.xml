@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/mainNote"
-        android:name="com.example.easyday.FRAGMENT.MainNoteFragment" >
+        android:name="com.example.easyday.FRAGMENT.note.MainNoteFragment" >
         <action
             android:id="@+id/actionAddNote"
             app:destination="@id/setNote"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/setNote"
-        android:name="com.example.easyday.FRAGMENT.SetNoteFragment" >
+        android:name="com.example.easyday.FRAGMENT.note.SetNoteFragment" >
         <action
             android:id="@+id/actionReturnMainNote"
             app:destination="@id/mainNote"

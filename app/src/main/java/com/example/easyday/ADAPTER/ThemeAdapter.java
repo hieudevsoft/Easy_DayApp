@@ -13,15 +13,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.easyday.CONTROL.HelpersServiceThemes;
 import com.example.easyday.CONTROL.SendTheme;
 import com.example.easyday.CONTROL.TOOL;
-import com.example.easyday.FRAGMENT.ThemesFragment;
+import com.example.easyday.FRAGMENT.home.ThemesFragment;
 import com.example.easyday.R;
 
 import java.util.List;

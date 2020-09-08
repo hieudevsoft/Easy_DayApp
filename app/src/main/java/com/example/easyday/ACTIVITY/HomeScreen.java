@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.example.easyday.ADAPTER.ScreenSliderFragment;
 import com.example.easyday.CONTROL.DepthPageTransformer;
-import com.example.easyday.FRAGMENT.MeFragment;
+import com.example.easyday.FRAGMENT.me.MeFragment;
 import com.example.easyday.R;
 import com.example.easyday.CONTROL.TOOL;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

@@ -52,4 +52,6 @@
 
     <string name="API_KEY_GOOGLE_MAP">AIzaSyALh6EOl0a_m64haVONolvGbHETmYP7sC0</string>
     <string name="API_KEY_OPEN_WEATHER">cc3e96b3ac51918adf3f0270b9631079</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
