@@ -124,7 +124,7 @@
                             android:background="@drawable/custom_layout_icon_home"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/speaking" />
+                            android:src="@drawable/music" />
                     </LinearLayout>
 
                     <LinearLayout

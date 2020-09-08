@@ -67,7 +67,7 @@ public class ParserJSonWeather {
 
                     JSONObject main = (JSONObject) response.getJSONObject("main");
                     Log.d(getTAG(), "main: " + main.toString());
-                    weather.setTemp(main.getString("temp")+" °C");
+                    weather.setTemp(main.getString("temp")+"°C");
                     weather.setMinTemp("Min Temp: "+ main.getString("temp_min")+" °C");
                     weather.setMaxTemp("Max Temp: "+main.getString("temp_max")+" °C");
                     weather.setPressure(main.getString("pressure"));
