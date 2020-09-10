@@ -67,7 +67,8 @@
                             android:background="@drawable/custom_layout_icon_home"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/notepad" />
+                            android:src="@drawable/notepad"
+                            android:contentDescription="TODO" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -83,7 +84,8 @@
                             android:background="@drawable/custom_layout_icon_home"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/map" />
+                            android:src="@drawable/map"
+                            android:contentDescription="TODO" />
                     </LinearLayout>
                 </RelativeLayout>
 
@@ -107,7 +109,8 @@
                             android:layout_height="70dp"
                             android:padding="10dp"
                             android:src="@drawable/weather"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"
+                            android:contentDescription="TODO" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -124,7 +127,8 @@
                             android:background="@drawable/custom_layout_icon_home"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/music" />
+                            android:src="@drawable/music"
+                            android:contentDescription="TODO" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,7 +144,8 @@
                             android:background="@drawable/custom_layout_icon_home"
                             android:padding="10dp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/clock" />
+                            android:src="@drawable/clock"
+                            android:contentDescription="TODO" />
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>

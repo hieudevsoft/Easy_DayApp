@@ -61,11 +61,11 @@ public class ParserJSonWeather {
             public void onResponse(JSONObject response) {
                 try {
 
-                    JSONObject Weather = (JSONObject) response.getJSONArray("weather").getJSONObject(0);
+                    JSONObject Weather = response.getJSONArray("weather").getJSONObject(0);
                     weather.setStatus(editStatusWeather(Weather.getString("description")));
                     Log.d(getTAG(), "weather: " + Weather.toString());
 
-                    JSONObject main = (JSONObject) response.getJSONObject("main");
+                    JSONObject main = response.getJSONObject("main");
                     Log.d(getTAG(), "main: " + main.toString());
                     weather.setTemp(main.getString("temp")+"°C");
                     weather.setMinTemp("Min Temp: "+ main.getString("temp_min")+" °C");

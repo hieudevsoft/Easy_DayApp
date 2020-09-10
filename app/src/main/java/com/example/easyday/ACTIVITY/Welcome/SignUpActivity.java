@@ -73,8 +73,7 @@ public class SignUpActivity extends AppCompatActivity {
         String regex = "^([_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*(\\.[a-zA-Z]{1,6}))?$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if(matcher.matches()) return true ; else
-        return false;
+        return matcher.matches();
     }
     private void createUser()
     {

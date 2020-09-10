@@ -111,7 +111,6 @@ public class MapActivity extends AppCompatActivity {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch(Exception ex) {}
         Log.d("MapFragment","GPS : " + gps_enabled + " networkEnnabled: " + network_enabled );
-        if(gps_enabled&&network_enabled) return true;
-        else return false;
+        return gps_enabled && network_enabled;
     }
 }

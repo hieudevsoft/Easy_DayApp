@@ -61,7 +61,7 @@ public class ThemeAdapter extends BaseAdapter {
         {
             view = LayoutInflater.from(context).inflate(R.layout.layout_card_themes,null);
             viewHolder = new ViewHolder();
-            viewHolder.cardView =(ImageView) view.findViewById(R.id.card_theme);
+            viewHolder.cardView = view.findViewById(R.id.card_theme);
             view.setTag(viewHolder);
         } else viewHolder = (ViewHolder) view.getTag();
         if(!listTheme.get(position).isEmpty()&&listTheme.size()>=1)

@@ -21,7 +21,8 @@
         android:clickable="true"
         android:src="@drawable/ic_add"
         tools:layout_editor_absoluteX="5dp"
-        tools:layout_editor_absoluteY="5dp" />
+        tools:layout_editor_absoluteY="5dp"
+        android:focusable="true" />
 
     <GridView
         android:padding="2dp"

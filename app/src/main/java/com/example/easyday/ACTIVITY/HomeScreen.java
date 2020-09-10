@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.RelativeLayout;
 
@@ -136,4 +137,5 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
             setSelectedItemBottom(number);
             viewPager2.setCurrentItem(number);
     }
+
 }

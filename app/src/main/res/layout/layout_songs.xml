@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/mainLayoutSongs"
         android:layout_marginBottom="10dp"
-        android:padding="10dp"
+        android:padding="5dp"
         android:background="@drawable/custom_card_me"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -14,24 +14,24 @@
         android:src="@drawable/music"
         android:id="@+id/image_Song"
         android:layout_width="60dp"
-        android:layout_height="60dp"/>
+        android:layout_height="60dp"
+        android:contentDescription="TODO" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@id/image_Song"
             android:orientation="vertical">
 
             <TextView
-
                 android:id="@+id/title_songs"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:fontFamily="@font/lato_regular"
-                android:maxLength="50"
+                android:maxLength="30"
                 android:text="This is title songs"
                 android:textColor="@color/colorTextBlack"
                 android:textSize="18sp" />
@@ -43,7 +43,7 @@
                 android:layout_height="0dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/lato_regular"
-                android:maxLength="50"
+                android:maxLength="30"
                 android:text="This is artist"
                 android:textColor="@color/colorTextBlackAlpha"
                 android:textSize="16sp" />

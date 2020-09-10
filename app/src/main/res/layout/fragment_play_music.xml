@@ -10,7 +10,8 @@
         android:scaleType="centerCrop"
         android:id="@+id/blurImageSongs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:contentDescription="TODO" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
                 android:id="@+id/imageSongsAlbum"
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
-                android:src="@drawable/music" />
+                android:src="@drawable/music"
+                android:contentDescription="TODO" />
 
             <LinearLayout
                 android:id="@+id/layout_DetailsSong"
@@ -75,7 +77,8 @@
                     android:layout_alignParentStart="true"
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_shuffle" />
+                    android:src="@drawable/ic_shuffle"
+                    android:contentDescription="TODO" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -89,7 +92,8 @@
                         android:layout_centerInParent="true"
                         android:background="@android:color/transparent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_prev_song" />
+                        android:src="@drawable/ic_prev_song"
+                        android:contentDescription="TODO" />
                 </RelativeLayout>
 
                 <ImageButton
@@ -99,7 +103,8 @@
                     android:layout_centerInParent="true"
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_play" />
+                    android:src="@drawable/ic_play"
+                    android:contentDescription="TODO" />
                 <RelativeLayout
                     android:layout_toStartOf="@id/bt_lopping_song"
                     android:layout_toEndOf="@id/bt_play_pause"
@@ -112,7 +117,8 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_next_song" />
+                        android:src="@drawable/ic_next_song"
+                        android:contentDescription="TODO" />
                 </RelativeLayout>
                 <ImageButton
                     android:id="@+id/bt_lopping_song"
@@ -121,7 +127,8 @@
                     android:layout_alignParentEnd="true"
                     android:background="@android:color/transparent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_looping_song" />
+                    android:src="@drawable/ic_looping_song"
+                    android:contentDescription="TODO" />
             </RelativeLayout>
 
             <RelativeLayout

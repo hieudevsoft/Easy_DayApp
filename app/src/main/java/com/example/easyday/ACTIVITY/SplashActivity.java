@@ -6,6 +6,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -50,10 +51,18 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(getApplication(), SignInActivity.class);
-                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SplashActivity.this, (View)tv_SplashAppName,"app_name_transition");
+                ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(SplashActivity.this, tv_SplashAppName,"app_name_transition");
                 startActivity(intent,options.toBundle() );
 
             }
         }, 5000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getSharedPreferences("POSITION_SONG", MODE_PRIVATE).edit().putBoolean("backPress", true).apply();
+        getSharedPreferences("POSITION_SONG", MODE_PRIVATE).edit().putBoolean("onCreate", false).apply();
+        Log.d("PlayMusicFragment","Destroy Back Press: " + getSharedPreferences("POSITION_SONG",MODE_PRIVATE).getBoolean("backPress", false)+"");
     }
 }

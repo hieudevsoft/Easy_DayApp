@@ -136,7 +136,9 @@ public class HomeFragment extends Fragment {
             if (getActivity().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) getContext(),
                         Manifest.permission.CAMERA)) {
-                    Toast.makeText(getContext(), "Please access Camera", Toast.LENGTH_LONG).show();
+                    ActivityCompat.requestPermissions(
+                            (Activity) getContext(), new String[]{Manifest.permission.CAMERA},
+                            REQUEST_CODE_FLASHLIGHT);
                 } else {
                     ActivityCompat.requestPermissions(
                             (Activity) getContext(), new String[]{Manifest.permission.CAMERA},

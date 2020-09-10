@@ -14,7 +14,8 @@
             android:id="@+id/card_theme"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:contentDescription="TODO" />
 
 
     </com.google.android.material.card.MaterialCardView>
