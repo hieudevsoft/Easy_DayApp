@@ -30,4 +30,9 @@
         <item name="android:backgroundTint">#FDD835</item>
     </style>
 
+    <style name="colorContact" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:backgroundTint">#3D5AFE</item>
+    </style>
+
 </resources>
