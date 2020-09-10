@@ -7,6 +7,7 @@
     tools:context=".FRAGMENT.music.fragmentsviewpager2.PlayMusicFragment">
 
     <ImageView
+        android:scaleType="centerCrop"
         android:id="@+id/blurImageSongs"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -138,7 +139,6 @@
                     android:layout_height="wrap_content"/>
                 <SeekBar
                     android:thumb="@android:color/transparent"
-                    android:progress="40"
                     android:splitTrack="false"
                     android:id="@+id/duration_Song"
                     android:progressDrawable="@drawable/custom_seekbar_song"

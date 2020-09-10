@@ -12,15 +12,22 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".CLASS.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ACTIVITY.MakeListMusicActivity"></activity>
-        <activity android:name=".ACTIVITY.AlarmActivity" />
-        <activity android:name=".ACTIVITY.WeatherActivity" />
+        <activity
+            android:name=".ACTIVITY.MakeListMusicActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity
+            android:name=".ACTIVITY.AlarmActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ACTIVITY.WeatherActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity
             android:name=".ACTIVITY.MapActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />

@@ -11,10 +11,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.easyday.CONTROL.SendPositionSong;
+import com.example.easyday.CONTROL.TOOL;
 import com.example.easyday.ENTITY.MusicsFile;
+import com.example.easyday.FRAGMENT.music.HomeMusicFragment;
 import com.example.easyday.R;
 
 import java.util.List;
@@ -22,7 +27,6 @@ import java.util.List;
 public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     List<MusicsFile> listMusics;
     Context context;
-
     public AdapterSong(List<MusicsFile> listMusics, Context context) {
         this.listMusics = listMusics;
         this.context = context;
@@ -39,10 +43,10 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AdapterSong.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterSong.ViewHolder holder, final int position) {
         holder.tv_title.setText(listMusics.get(position).getTitle());
         holder.tv_artist.setText(listMusics.get(position).getArtist());
-        byte[] iamge = getAlbumArt(listMusics.get(position).getData());
+        byte[] iamge = TOOL.getAlbumArt(listMusics.get(position).getData());
         if(iamge!=null){
             Glide.with(context).asBitmap().centerCrop().load(iamge).into(holder.image_songs);
         }
@@ -50,6 +54,14 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
             Glide.with(context).asBitmap().centerCrop().load(R.drawable.music).into(holder.image_songs);
         }
         holder.mainLayoutSongs.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim_note));
+        holder.mainLayoutSongs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SendPositionSong sendPositionSong = ViewModelProviders.of((FragmentActivity) context).get(SendPositionSong.class);
+                sendPositionSong.getPosition().postValue(position);
+                HomeMusicFragment.viewPager.setCurrentItem(1, true);
+            }
+        });
     }
 
     @Override
@@ -67,14 +79,5 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
             tv_artist = itemView.findViewById(R.id.artist_songs);
             mainLayoutSongs = itemView.findViewById(R.id.mainLayoutSongs);
         }
-    }
-    private byte[] getAlbumArt(String uri)
-    {
-        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-        mediaMetadataRetriever.setDataSource(uri);
-        byte[] result = mediaMetadataRetriever.getEmbeddedPicture();
-        mediaMetadataRetriever.release();
-        return result;
-
     }
 }

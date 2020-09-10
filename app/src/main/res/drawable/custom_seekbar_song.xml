@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background">
-        <shape android:shape="rectangle">
-            <solid android:color="#4D000000" />
-            <corners android:radius="3dp" />
-        </shape>
+
+                <shape android:shape="rectangle">
+                    <solid android:color="#4D000000" />
+                    <corners android:radius="3dp" />
+                </shape>
     </item>
     <item android:id="@android:id/progress">
-        <scale android:scaleWidth="100%"
-                android:scaleHeight="100%">
+        <scale android:scaleWidth="100%">
                 <selector>
                     <item android:drawable="@drawable/round_progress_seekbar"/>
                 </selector>

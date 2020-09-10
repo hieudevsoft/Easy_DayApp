@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.util.Base64;
 import android.view.Gravity;
@@ -36,7 +37,8 @@ import jp.wasabeef.blurry.Blurry;
 
 
 public class TOOL {
-
+    public static String ACTION_START_SERVICE="actionStartService";
+    public static String ACTION_MAIN="actionMain";
     public static void FULL_SCREEN(Activity activity)
     {
         activity.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -156,5 +158,13 @@ public class TOOL {
     public static void setBlurForImageView(Context context,ImageView imageView,Bitmap bitmap,int blur)
     {
         Blurry.with(context).radius(blur).sampling(10).from(bitmap).into(imageView);
+    }
+    public static byte[] getAlbumArt(String uri)
+    {
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(uri);
+        byte[] result = mediaMetadataRetriever.getEmbeddedPicture();
+        mediaMetadataRetriever.release();
+        return result;
     }
 }

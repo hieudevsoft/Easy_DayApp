@@ -22,7 +22,7 @@ import java.util.List;
 
 
 public class HomeMusicFragment extends Fragment {
-     ViewPager viewPager;
+     public static ViewPager viewPager;
      View view;
      ViewPagerAdapterMusic adapter;
      List<Fragment> listFragment;

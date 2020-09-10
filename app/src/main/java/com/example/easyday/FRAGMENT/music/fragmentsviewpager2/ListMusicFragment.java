@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -39,7 +38,7 @@ public class ListMusicFragment extends Fragment {
     boolean checkPermission = false;
     final static String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     final static int REQUEST_WRITE_EXTERNAL_STORAGE = 1248;
-    List<MusicsFile> listMusics;
+    public static List<MusicsFile> listMusics;
     AdapterSong adapterSong;
     final static String TAG="ListMusicFragment";
 
@@ -50,6 +49,7 @@ public class ListMusicFragment extends Fragment {
     public ListMusicFragment() {
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

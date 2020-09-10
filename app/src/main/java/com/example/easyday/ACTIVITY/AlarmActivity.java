@@ -83,10 +83,15 @@ public class AlarmActivity extends AppCompatActivity {
         bt_turn_off.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                    try{
                     intent = new Intent(getApplicationContext(),AlarmService.class);
-                    intent.putExtra("checkMusic", false);
+                    intent.setAction(TOOL.ACTION_START_SERVICE);
+                    intent.putExtra("checkAlarm", true);
                     startService(intent);
+                    }catch (Exception e)
+                    {
+                        TOOL.setToast(getApplicationContext(), "Alarm not set!!");
+                    }
 
             }
         });
@@ -138,6 +143,7 @@ public class AlarmActivity extends AppCompatActivity {
     private void openAlarm(Calendar c) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         intent = new Intent(this, AlarmService.class);
+        intent.setAction(TOOL.ACTION_START_SERVICE);
         intent.putExtra("contentText", edt_setDesTime.getText().toString().trim());
         intent.putExtra("music", R.raw.alarm);
         intent.putExtra("checkMusic", true);
