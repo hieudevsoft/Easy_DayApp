@@ -54,7 +54,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_alrm_button"
                 android:fontFamily="@font/helveticaneue_light"
-                android:text="Alram"
+                android:text="Alarm"
                 android:textAllCaps="false"
                 android:textSize="19sp" />
 

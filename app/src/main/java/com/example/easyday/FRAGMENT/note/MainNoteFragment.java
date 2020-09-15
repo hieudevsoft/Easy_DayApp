@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainNoteFragment extends Fragment {
     RecyclerAdapterMainNote recyclerAdapterMainNote;
@@ -48,19 +50,19 @@ public class MainNoteFragment extends Fragment {
     MediaPlayer mediaPlayer;
     Chip chip_low, chip_high;
     ChipGroup chipGroup;
+
     final static String TAG = "MainNoteFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext()).inflate(R.layout.main_note_layout, null);
         listNotesTempAllList = new ArrayList<>();
-        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.getUrlGetNoteFromService(), FirebaseAuth.getInstance().getCurrentUser().getUid());
         return view;
     }
 
     @Override
     public void onResume() {
-
+        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.getUrlGetNoteFromService(), FirebaseAuth.getInstance().getCurrentUser().getUid(),requireActivity());
         super.onResume();
     }
 
@@ -74,8 +76,10 @@ public class MainNoteFragment extends Fragment {
             public void onChanged(List<Note> noteList) {
                 listNotes.clear();
                 listNotes.addAll(noteList);
+                listNotesTempAllList.clear();
                 listNotesTempAllList.addAll(listNotes);
                 recyclerAdapterMainNote.notifyDataSetChanged();
+                Log.d("SetNoteFragment","Send model: " + listNotesTempAllList.size()+"");
             }
         });
         edt_search_note.addTextChangedListener(new TextWatcher() {
@@ -86,6 +90,7 @@ public class MainNoteFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("SetNoteFragment","Text Change: " + listNotesTempAllList.size()+"");
                 filter(s);
 
             }
@@ -102,7 +107,6 @@ public class MainNoteFragment extends Fragment {
     }
 
     private void controlSortList() {
-
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(ChipGroup group, int checkedId) {
@@ -133,7 +137,7 @@ public class MainNoteFragment extends Fragment {
                         });
                     recyclerAdapterMainNote.notifyDataSetChanged();
                 }
-
+                Log.d(getTAG(),"Size listnote: " + listNotes.size()+"");
             }
         });
     }
@@ -188,7 +192,8 @@ public class MainNoteFragment extends Fragment {
     }
 
     private void filter(CharSequence s) {
-        Log.d(getTAG(),"ListnoteTempAllist: " + listNotes.size()+"");
+        Log.d(getTAG(),"ListnoteTempAllist: " + listNotesTempAllList.size()+"");
+        Log.d("SetNoteFragment",listNotesTempAllList.size()+"");
         listNotes.clear();
         if (s.toString().length() == 0) {
             listNotes.addAll(listNotesTempAllList);
@@ -197,7 +202,7 @@ public class MainNoteFragment extends Fragment {
                 if (note.getTitle().toLowerCase().trim().contains(s.toString().toLowerCase()))
                     listNotes.add(note);
         }
-        Log.d(getTAG(),"Listnote: " + listNotes.size()+"");
+        Log.d(getTAG(),"ListnoteTempAllist: " + listNotesTempAllList.size()+"");
         recyclerAdapterMainNote.notifyDataSetChanged();
     }
 

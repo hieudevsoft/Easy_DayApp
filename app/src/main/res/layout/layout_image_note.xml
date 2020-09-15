@@ -11,7 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_home_me"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:contentDescription="TODO" />
 
     <EditText

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,6 @@ public class SignUpActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_enter_screen, R.anim.anim_exit_screen);
-
             }
         });
     }
@@ -110,8 +110,10 @@ public class SignUpActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Register Successful~", Toast.LENGTH_LONG).show();
                                     }
                                 }, 2500);
+
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(mAuth.getCurrentUser().getUid()).setValue(new Account("Name",edt_email.getText().toString().trim(),mAuth.getCurrentUser().getPhoneNumber()+"","Male","https://i7.pngguru.com/preview/1016/429/148/computer-icons-download-avatar-avatar.jpg",false));
+                                Log.d("TAG",FirebaseDatabase.getInstance().getReference("Users")+"");
                             }
                             else Toast.makeText(getApplicationContext(), "Account already exists!!", Toast.LENGTH_LONG).show();
                         }

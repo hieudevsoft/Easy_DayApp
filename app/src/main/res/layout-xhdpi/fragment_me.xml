@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/mainLyoutContainerMe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorBackGroundMe"
@@ -168,7 +171,7 @@
                     android:id="@+id/edt_name_me"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helveticaneue_light"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPersonName" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -185,14 +188,17 @@
                 app:boxStrokeWidth="0.5dp"
                 app:endIconTint="@color/colorNavIcon"
                 app:endIconTintMode="src_atop"
+                app:endIconMode="clear_text"
                 app:startIconDrawable="@drawable/ic_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_email_me"
                     android:textSize="18sp"
+                    android:enabled="false"
+                    android:editable="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helveticaneue_light"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -216,7 +222,7 @@
                     android:textSize="18sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helveticaneue_light"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="phone" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
@@ -238,9 +244,11 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_password_me"
                     android:textSize="18sp"
+                    android:editable="false"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/helveticaneue_light"
+                    android:fontFamily="@font/lato_regular"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
             <androidx.appcompat.widget.AppCompatSpinner

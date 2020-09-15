@@ -1,11 +1,13 @@
 package com.example.easyday.ACTIVITY.Welcome;
 
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -52,18 +54,21 @@ public class SignInActivity extends AppCompatActivity {
     Boolean wifiConnected = false,dataMobile= false;
     LoginButton loginButton;
     ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TOOL.FULL_SCREEN(this);
+        overridePendingTransition(R.anim.anim_enter_screen, R.anim.anim_exit_screen);
         setContentView(R.layout.welcome_activity);
+        mapping();
+        showSignUp();
         try {
 
             if (checkNetWorking()) {
                 mAuth = FirebaseAuth.getInstance();
                 FacebookSdk.sdkInitialize(getApplicationContext());
-                mapping();
-                showSignUp();
+
                 loginWithFacebook();
                 bt_signin.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -79,15 +84,16 @@ public class SignInActivity extends AppCompatActivity {
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setContentView(R.layout.reset_pass_dialog);
                         int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.95);
-                        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.3);
+                        int height = (int) (getResources().getDisplayMetrics().heightPixels * 0.5);
                         dialog.getWindow().setLayout(width, height);
                         Button buttonReset = dialog.findViewById(R.id.btSendResetPassword);
                         final EditText edt_resetPassEmail = dialog.findViewById(R.id.edt_resetPass);
+                        edt_resetPassEmail.setText(edt_email.getText().toString().trim());
                         buttonReset.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 if (validateEmail(edt_resetPassEmail.getText().toString().trim())) {
-                                    mAuth.sendPasswordResetEmail(edt_email.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    mAuth.sendPasswordResetEmail(edt_resetPassEmail.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
@@ -140,6 +146,7 @@ public class SignInActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                             } else {
                                 Toast.makeText(getApplicationContext(), "Account or Password not correct!", Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
                                 edt_email.setError("");
                                 edt_password.setError("");
                             }
@@ -170,10 +177,9 @@ public class SignInActivity extends AppCompatActivity {
         bt_signup_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.anim_enter_screen, R.anim.anim_exit_screen);
-
             }
         });
     }
@@ -195,7 +201,6 @@ public class SignInActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
     private void loginWithFacebook()
     {
         mCallbackManager = CallbackManager.Factory.create();
@@ -231,8 +236,12 @@ public class SignInActivity extends AppCompatActivity {
                                 FirebaseDatabase.getInstance().getReference("Users")
                                         .child(mAuth.getCurrentUser().getUid()).setValue(new Account(user.getDisplayName(),user.getUid()+"@easyday.com",user.getPhoneNumber()+"","Male",user.getPhotoUrl().toString(),false));
                             else
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(mAuth.getCurrentUser().getUid()).setValue(new Account(user.getDisplayName(),user.getEmail(),user.getPhoneNumber()+"","Male",user.getPhotoUrl().toString(),false));
+                            {
+                                FirebaseDatabase.getInstance().getReference("Users")
+                                        .child(mAuth.getCurrentUser().getUid()).setValue(new Account(user.getDisplayName(),user.getEmail(),user.getPhoneNumber()+"","Male",user.getPhotoUrl().toString(),false));
+
+                                Log.d("TAG","Vao day");
+                            }
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -244,7 +253,7 @@ public class SignInActivity extends AppCompatActivity {
                     }
                 });
     }
-    private boolean checkNetWorking()
+    public boolean checkNetWorking()
     {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();

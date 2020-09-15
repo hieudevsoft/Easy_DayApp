@@ -5,13 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Handler;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
@@ -34,6 +38,8 @@ import com.example.easyday.FRAGMENT.home.ThemesFragment;
 import com.example.easyday.ENTITY.Note;
 
 import jp.wasabeef.blurry.Blurry;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
 public class TOOL {
@@ -165,6 +171,38 @@ public class TOOL {
         mediaMetadataRetriever.setDataSource(uri);
         byte[] result = mediaMetadataRetriever.getEmbeddedPicture();
         mediaMetadataRetriever.release();
+        return result;
+    }
+
+    public static void makeToastView(Context context)
+    {
+        Toast toast;
+        toast = new Toast(context);
+        toast.setView(LayoutInflater.from(context).inflate(R.layout.toast_register_successful, null));
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    public static void enableDisableViewGroup(ViewGroup viewGroup, boolean enabled) {
+        int childCount = viewGroup.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            View view = viewGroup.getChildAt(i);
+            view.setEnabled(enabled);
+            if (view instanceof ViewGroup) {
+                enableDisableViewGroup((ViewGroup) view, enabled);
+            }
+        }
+    }
+    public static Bitmap scaleDown(Bitmap bitmap, int maxSize,boolean filter)
+    {
+        float ratio = Math.min(
+                (float) maxSize / bitmap.getWidth(),
+                (float) maxSize / bitmap.getHeight());
+        int width = Math.round((float) ratio * bitmap.getWidth());
+        int height = Math.round((float) ratio * bitmap.getHeight());
+        Bitmap result = Bitmap.createScaledBitmap(bitmap, width, height, filter);
+
         return result;
     }
 }

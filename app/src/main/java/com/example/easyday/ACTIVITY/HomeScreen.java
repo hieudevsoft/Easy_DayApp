@@ -11,11 +11,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 
 import com.example.easyday.ADAPTER.ScreenSliderFragment;
 import com.example.easyday.CONTROL.DepthPageTransformer;
+import com.example.easyday.CONTROL.HelpersServiceThemes;
 import com.example.easyday.FRAGMENT.me.MeFragment;
 import com.example.easyday.R;
 import com.example.easyday.CONTROL.TOOL;
@@ -116,10 +120,29 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
                     @Override
                     public void run() {
                         setSelectedItemBottom(viewPager2.getCurrentItem());
+                        if(viewPager2.getCurrentItem()==1)
+                        {
+                            try{
+                            TOOL.enableDisableViewGroup((ViewGroup) listFragment.get(2).getView().findViewById(R.id.mainLyoutContainerMe), false);
+                            }catch (Exception e)
+                            {
+
+                            }
+                        }
+                        else {
+                            try {
+
+                                TOOL.enableDisableViewGroup((ViewGroup) listFragment.get(2).getView().findViewById(R.id.mainLyoutContainerMe), true);
+                            }catch (Exception e)
+                            {
+
+                            }
+
+                        }
                     }
                 });
             }
-        }, 100, 100);
+        }, 200, 100);
 
     }
 
@@ -138,4 +161,14 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
             viewPager2.setCurrentItem(number);
     }
 
+    @Override
+    protected void onDestroy() {
+        try {
+            HelpersServiceThemes.timer.cancel();
+        }catch (Exception e){
+
+        }
+
+        super.onDestroy();
+    }
 }

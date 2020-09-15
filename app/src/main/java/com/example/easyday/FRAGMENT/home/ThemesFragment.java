@@ -83,7 +83,7 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
         db = FirebaseDatabase.getInstance().getReference("Themes").child(user.getUid());
         themeAdapter = new ThemeAdapter(listThemes, getContext(),getActivity());
         gridView.setAdapter(themeAdapter);
-        HelpersServiceThemes.getDataFromServer(HelpersServiceThemes.getUrlWebserviceGetData(), user, listThemes, themeAdapter, getContext());
+        HelpersServiceThemes.getDataFromServer(HelpersServiceThemes.getUrlWebserviceGetData(), user, listThemes, themeAdapter, getContext(),requireActivity());
         return view;
     }
 
@@ -123,6 +123,7 @@ public class ThemesFragment extends Fragment implements LifecycleOwner {
                     InputStream inputStream = getActivity().getContentResolver().openInputStream(resultUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                     listThemes.add(TOOL.convertBitMapToString(bitmap));
+                    themeAdapter.notifyDataSetChanged();
                     for(String uri:listThemes)
                         stringBuilder.append(uri+",");
                     HelpersServiceThemes.updateData(user.getUid(), stringBuilder.toString(), HelpersServiceThemes.getUrlWebserviceUpdate(),getContext());

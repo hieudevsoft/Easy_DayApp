@@ -3,11 +3,10 @@ package com.example.easyday.FRAGMENT.me;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,29 +36,34 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-
 import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CONNECTIVITY_SERVICE;
+import static android.net.ConnectivityManager.TYPE_MOBILE;
+import static android.net.ConnectivityManager.TYPE_WIFI;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class MeFragment extends Fragment {
-    Button bt_Signout,bt_Submit;
+    Button bt_Signout, bt_Submit;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
     ImageView imgAvatar;
     TextView tvEmailHeader;
     TextView tvNameHeader;
-    EditText edt_email, edt_phone,edt_password,edt_name;
+    EditText edt_email, edt_phone, edt_password, edt_name;
     Spinner gender;
     View view;
     String urlPhoto;
-    ImageButton imgbt_theme,imgbt_home;
+    Boolean wifiConnected = false, dataMobile = false;
+    ImageButton imgbt_theme, imgbt_home;
     Toast toast;
     final int PICK_IMAGE_AVATAR = 1;
     private DatabaseReference mDatabase;
     OnClickListener onClickListener;
-    public interface OnClickListener{
+
+    public interface OnClickListener {
         void onClickImageButton(int number);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,17 +74,6 @@ public class MeFragment extends Fragment {
 
     @Override
     public void onResume() {
-
-
-        bt_Signout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                LoginManager.getInstance().logOut();
-                getActivity().finish();
-            }
-        });
-        updateProfile();
         imgbt_theme.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,6 +86,17 @@ public class MeFragment extends Fragment {
                 onClickListener.onClickImageButton(1);
             }
         });
+        if (checkNetWorking()) {
+            bt_Signout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mAuth.signOut();
+                    LoginManager.getInstance().logOut();
+                    requireActivity().finish();
+                }
+            });
+            updateProfile();
+        } else TOOL.setToast(getApplicationContext(), "Network is not connected");
         super.onResume();
     }
 
@@ -100,11 +104,9 @@ public class MeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == PICK_IMAGE_AVATAR && resultCode == RESULT_OK  )
-        {
-            if(data==null) Toast.makeText(getContext(), "Error!", Toast.LENGTH_LONG).show();
-            else
-            {
+        if (requestCode == PICK_IMAGE_AVATAR && resultCode == RESULT_OK) {
+            if (data == null) Toast.makeText(getContext(), "Error!", Toast.LENGTH_LONG).show();
+            else {
                 try {
                     urlPhoto = String.valueOf(data.getData());
                     Glide.with(requireActivity()).load(urlPhoto).centerCrop().into(imgAvatar);
@@ -134,8 +136,7 @@ public class MeFragment extends Fragment {
 
     }
 
-    private void mapping()
-    {
+    private void mapping() {
         bt_Signout = view.findViewById(R.id.bt_signout);
         tvEmailHeader = view.findViewById(R.id.tv_email_me_header);
         tvNameHeader = view.findViewById(R.id.tv_name_me_header);
@@ -149,111 +150,109 @@ public class MeFragment extends Fragment {
         imgbt_home = view.findViewById(R.id.imagebt_home_me);
         imgbt_theme = view.findViewById(R.id.imagebt_themes_me);
     }
-    private void updateProfileUpToDatabase(String name, String email,String phone,String gender,String urlPhoto,boolean mUpdate)
-    {
-        Account account = new Account(name,email,phone,gender,urlPhoto,mUpdate);
+
+    private void updateProfileUpToDatabase(String name, String email, String phone, String gender, String urlPhoto, boolean mUpdate) {
+        Account account = new Account(name, email, phone, gender, urlPhoto, mUpdate);
         mDatabase.child(mUser.getUid()).setValue(account);
     }
-    private void loadSingleDataFromDataBase()
-    {
+
+    private void loadSingleDataFromDataBase() {
         edt_password.setEnabled(false);
         edt_email.setEnabled(false);
         Query checkUser = mDatabase.orderByChild("mEmail").equalTo(mUser.getEmail());
         checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists())
-                {
+                if (snapshot.exists()) {
                     String mName = snapshot.child(mUser.getUid()).child("mName").getValue(String.class);
                     String mEmail = snapshot.child(mUser.getUid()).child("mEmail").getValue(String.class);
                     String mPhoneNumber = snapshot.child(mUser.getUid()).child("mPhoneNumber").getValue(String.class);
-                    if(mPhoneNumber.equals("null")) mPhoneNumber="";
+                    if (mPhoneNumber.equals("null")) mPhoneNumber = "";
                     String mGender = snapshot.child(mUser.getUid()).child("mGender").getValue(String.class);
                     String mUrlPhoto = snapshot.child(mUser.getUid()).child("mUrlPhoto").getValue(String.class);
 
                     tvNameHeader.setText(mName);
-                    edt_name.setText(mName );
-                    tvEmailHeader.setText(mEmail);
-                    edt_phone.setText(mPhoneNumber, null);
-                    edt_password.setText("Password was protected");
-                    edt_email.setText(mEmail );
-                    assert mGender != null;
-                    switch (mGender)
-                    {
-                        case "Male":gender.setSelection(0);
-                                    break;
-                        case "Female":gender.setSelection(1);
-                                    break;
-                        default: gender.setSelection(2);
-                                    break;
-                    }
-                    if(mUrlPhoto!=null)
-                    {
-                        if(mUrlPhoto.contains("facebook.com")||mUrlPhoto.contains("https"))
-                            Glide.with(getContext()).load(mUrlPhoto).centerCrop().into(imgAvatar);
-                        else
-                            imgAvatar.setImageBitmap(TOOL.convertStringToBitmap(mUrlPhoto));
-                    }
-
-                    else Glide.with(getContext()).load("https://i7.pngguru.com/preview/1016/429/148/computer-icons-download-avatar-avatar.jpg").centerCrop().into(imgAvatar);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        Query checkUserWhithoutEmail = mDatabase.orderByChild("mEmail").equalTo(mUser.getUid()+"@easyday.com");
-        checkUserWhithoutEmail.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists())
-                {
-                    String mName = snapshot.child(mUser.getUid()).child("mName").getValue(String.class);
-                    String mEmail = "Email@easyday.com";
-                    String mPhoneNumber = snapshot.child(mUser.getUid()).child("mPhoneNumber").getValue(String.class);
-                    if(mPhoneNumber.equals("null")) mPhoneNumber="";
-                    String mGender = snapshot.child(mUser.getUid()).child("mGender").getValue(String.class);
-                    String mUrlPhoto = snapshot.child(mUser.getUid()).child("mUrlPhoto").getValue(String.class);
-
-                    tvNameHeader.setText(mName);
-                    edt_name.setText(mName );
+                    edt_name.setText(mName);
                     tvEmailHeader.setText(mEmail);
                     edt_phone.setText(mPhoneNumber, null);
                     edt_password.setText("Password was protected");
                     edt_email.setText(mEmail);
                     assert mGender != null;
-                    switch (mGender)
-                    {
-                        case "Male":gender.setSelection(0);
+                    switch (mGender) {
+                        case "Male":
+                            gender.setSelection(0);
                             break;
-                        case "Female":gender.setSelection(1);
+                        case "Female":
+                            gender.setSelection(1);
                             break;
-                        default: gender.setSelection(2);
+                        default:
+                            gender.setSelection(2);
                             break;
                     }
-                    if(mUrlPhoto!=null)
-                    {
-                        if(mUrlPhoto.contains("facebook.com")||mUrlPhoto.contains("https"))
-                            Glide.with(getContext()).load(mUrlPhoto).fitCenter().into(imgAvatar);
+                    if (mUrlPhoto != null) {
+                        if (mUrlPhoto.contains("facebook.com") || mUrlPhoto.contains("https"))
+                            Glide.with(getContext()).load(mUrlPhoto).centerCrop().into(imgAvatar);
                         else
                             imgAvatar.setImageBitmap(TOOL.convertStringToBitmap(mUrlPhoto));
-                    }
-                    else Glide.with(getContext()).load("https://i7.pngguru.com/preview/1016/429/148/computer-icons-download-avatar-avatar.jpg").fitCenter().into(imgAvatar);
+                    } else
+                        Glide.with(getContext()).load("https://i7.pngguru.com/preview/1016/429/148/computer-icons-download-avatar-avatar.jpg").centerCrop().into(imgAvatar);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                TOOL.setToast(getContext(), "Connected failure~");
+            }
+        });
+        Query checkUserWhithoutEmail = mDatabase.orderByChild("mEmail").equalTo(mUser.getUid() + "@easyday.com");
+        checkUserWhithoutEmail.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String mName = snapshot.child(mUser.getUid()).child("mName").getValue(String.class);
+                    String mEmail = "Email@easyday.com";
+                    String mPhoneNumber = snapshot.child(mUser.getUid()).child("mPhoneNumber").getValue(String.class);
+                    if (mPhoneNumber.equals("null")) mPhoneNumber = "";
+                    String mGender = snapshot.child(mUser.getUid()).child("mGender").getValue(String.class);
+                    String mUrlPhoto = snapshot.child(mUser.getUid()).child("mUrlPhoto").getValue(String.class);
 
+                    tvNameHeader.setText(mName);
+                    edt_name.setText(mName);
+                    tvEmailHeader.setText(mEmail);
+                    edt_phone.setText(mPhoneNumber, null);
+                    edt_password.setText("Password was protected");
+                    edt_email.setText(mEmail);
+                    assert mGender != null;
+                    switch (mGender) {
+                        case "Male":
+                            gender.setSelection(0);
+                            break;
+                        case "Female":
+                            gender.setSelection(1);
+                            break;
+                        default:
+                            gender.setSelection(2);
+                            break;
+                    }
+                    if (mUrlPhoto != null) {
+                        if (mUrlPhoto.contains("facebook.com") || mUrlPhoto.contains("https"))
+                            Glide.with(getContext()).load(mUrlPhoto).fitCenter().into(imgAvatar);
+                        else
+                            imgAvatar.setImageBitmap(TOOL.convertStringToBitmap(mUrlPhoto));
+                    } else
+                        Glide.with(getContext()).load("https://i7.pngguru.com/preview/1016/429/148/computer-icons-download-avatar-avatar.jpg").fitCenter().into(imgAvatar);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                TOOL.setToast(getContext(), "Connected failure~");
             }
         });
 
     }
 
-    private void updateProfile()
-    {
+    private void updateProfile() {
         bt_Submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,12 +263,8 @@ public class MeFragment extends Fragment {
                 tvNameHeader.setText(name);
                 String sex = (String) gender.getSelectedItem();
                 urlPhoto = TOOL.convertBitMapToString(TOOL.getBitmapFromImageView(imgAvatar));
-                updateProfileUpToDatabase(name, email, phone, sex, urlPhoto,true);
-                toast = new Toast(getApplicationContext());
-                toast.setView(LayoutInflater.from(getApplicationContext()).inflate(R.layout.toast_register_successful, null));
-                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-                toast.setDuration(Toast.LENGTH_LONG);
-                toast.show();
+                updateProfileUpToDatabase(name, email, phone, sex, urlPhoto, true);
+                TOOL.makeToastView(getApplicationContext());
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -286,5 +281,16 @@ public class MeFragment extends Fragment {
 
         Activity activity = (Activity) context;
         onClickListener = (OnClickListener) activity;
+    }
+
+    public boolean checkNetWorking() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) requireActivity().getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            wifiConnected = networkInfo.getType() == TYPE_WIFI;
+            dataMobile = networkInfo.getType() == TYPE_MOBILE;
+            return wifiConnected || dataMobile;
+        }
+        return false;
     }
 }

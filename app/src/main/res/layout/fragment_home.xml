@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayoutContainer"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,6 +12,7 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:src="@drawable/back_ground_home"
             android:id="@+id/image_Theme_Home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -158,7 +160,7 @@
                 app:rippleColor="@color/colorBackground"
                 app:borderWidth="0dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="65dp"
+                android:layout_marginBottom="75dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_width="wrap_content"

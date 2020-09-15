@@ -5,7 +5,15 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackGroundWelcome"
     tools:context=".ACTIVITY.Welcome.SignInActivity">
-
+    <ProgressBar
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:indeterminateTint="#232222"
+        android:layout_marginTop="30dp"
+        android:id="@+id/progress_loading"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/tv_welcome"
         android:layout_width="wrap_content"
@@ -25,13 +33,6 @@
         android:layout_below="@id/tv_welcome"
         android:background="@drawable/custom_login"
         android:orientation="vertical">
-        <ProgressBar
-            android:indeterminateTint="#FF1744"
-            android:id="@+id/progress_loading"
-            android:layout_gravity="center_horizontal|center_vertical"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

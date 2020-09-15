@@ -4,9 +4,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +28,7 @@ import com.example.easyday.ENTITY.ImageNote;
 import com.example.easyday.R;
 
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 public class RecyclerAdapterSetNote extends RecyclerView.Adapter<RecyclerAdapterSetNote.ViewHolder> {
@@ -69,6 +74,22 @@ public class RecyclerAdapterSetNote extends RecyclerView.Adapter<RecyclerAdapter
                     listImageNote.remove(position);
                     TOOL.setToast(context, "You deleted note "+positionTemp+"");
                     notifyDataSetChanged();
+                }
+            });
+            holder.imgNote.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.layout_show_image);
+                    ImageView imageView = dialog.findViewById(R.id.showImage);
+//                    BitmapDrawable bitmapDrawable = (BitmapDrawable) holder.imgNote.getDrawable();
+ //                   Bitmap bitmap = bitmapDrawable.getBitmap();
+//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100,byteArrayOutputStream);
+//                    byte[] img = byteArrayOutputStream.toByteArray();
+                    imageView.setImageBitmap(listImageNote.get(position).getImageNote());
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.show();
                 }
             });
         }

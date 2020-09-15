@@ -69,7 +69,12 @@ public class RecyclerAdapterMainNote extends RecyclerView.Adapter<RecyclerAdapte
                             }else  {
                                 HelpersService.deleteImageNoteByPosition(context, idNote);
                             }
+                            try {
+                                HelpersService.deleteImageNoteByPosition(context, idNote);
+                            }catch (Exception e)
+                            {
 
+                            }
 
 
                         listNote.remove(position);

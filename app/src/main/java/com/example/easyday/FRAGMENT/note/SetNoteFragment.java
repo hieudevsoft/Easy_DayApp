@@ -3,11 +3,13 @@ package com.example.easyday.FRAGMENT.note;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -51,6 +53,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +79,8 @@ public class SetNoteFragment extends Fragment {
     RecyclerAdapterSetNote recyclerAdapterSetNote;
     final int PICK_IMAGE_NOTE = 5;
     final int REQUEST_PICK_IMAGE_NOTE = 6;
-
+    Uri imageUri;
+    final int REQUEST_CODE_SETUP_CAM = 78;
     final static String TAG="SetNoteFragment";
 
     @Nullable
@@ -100,7 +104,6 @@ public class SetNoteFragment extends Fragment {
             Note note = args.getNote();
             if (note != null) {
                 updateView(note);
-
             } else
                 openTerm();
         }
@@ -149,10 +152,6 @@ public class SetNoteFragment extends Fragment {
             }
         });
     }
-
-
-
-
     private void updateView(Note note) {
         edt_idNote.setText(note.getIdNote().split("_")[0].substring(idUser.length()));
         edt_idNote.setEnabled(false);
@@ -166,6 +165,7 @@ public class SetNoteFragment extends Fragment {
         {
             sizeImagenote = 0;
         }
+        Log.d(getTAG(),"size note list click: " +sizeImagenote);
         recyclerAdapterSetNote.notifyDataSetChanged();
     }
 
@@ -196,21 +196,57 @@ public class SetNoteFragment extends Fragment {
                 } else
                     Toast.makeText(getContext(), "Please access Camera", Toast.LENGTH_LONG).show();
                 break;
+            case REQUEST_CODE_SETUP_CAM:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setUpCamera();
+                } else
+                {
+                    Toast.makeText(getContext(), "Please access write external storage", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private void openCamera() {
-        Intent openCam = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(openCam, PICK_IMAGE_NOTE);
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_GRANTED){
+                setUpCamera();
+            }
+            else {
+                if(shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                {
 
+                }
+                requireActivity().requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},REQUEST_CODE_SETUP_CAM);
+            }
+        } else setUpCamera();
+
+    }
+    private void setUpCamera()
+    {
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        imageUri = requireActivity().getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, PICK_IMAGE_NOTE);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_IMAGE_NOTE && resultCode == RESULT_OK) {
-            Bitmap image = (Bitmap) data.getExtras().get("data");
-            imageNoteList.add(new ImageNote(image, ""));
-            recyclerAdapterSetNote.notifyDataSetChanged();
+            Bitmap image = null;
+            try {
+                image = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
+                Log.d("review",TOOL.convertBitMapToString(image).length()+"");
+                Log.d("review","resize: " + TOOL.convertBitMapToString(TOOL.scaleDown(image, 480,true)).length()+"");
+                Bitmap imageResize = TOOL.scaleDown(image, 480, true);
+                imageNoteList.add(new ImageNote(imageResize, ""));
+                recyclerAdapterSetNote.notifyDataSetChanged();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -386,14 +422,13 @@ public class SetNoteFragment extends Fragment {
                              int level = spinner.getSelectedItemPosition() + 1;
                              insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
                                      , "", level, getContext());
-                            if (imageNoteList.size() != 0)
+                            if (imageNoteList.size() != 0) {
+                                Log.d("review","imgnoteList: " + imageNoteList.size());
                                 for (int i = 0; i < imageNoteList.size(); i++)
-                                    if (i == 0)
-                                        insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), titleNote, contentNote,
-                                                TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
-                                    else
                                         insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
                                                 TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
+
+                            }
 
                 mediaPlayerDone = MediaPlayer.create(getContext(), R.raw.done);
                 new Handler().postDelayed(new Runnable() {
@@ -414,7 +449,6 @@ public class SetNoteFragment extends Fragment {
             });
         }
     }
-
     private void mapping() {
         bt_done_note = getView().findViewById(R.id.bt_done_note);
         bt_back_note = getView().findViewById(R.id.bt_back_note);
@@ -425,9 +459,9 @@ public class SetNoteFragment extends Fragment {
         recyclerImageNote = getView().findViewById(R.id.recyclerViewImageNote);
         spinner = getView().findViewById(R.id.spinner_priority);
     }
-
     private void initAdapter() {
         recyclerAdapterSetNote = new RecyclerAdapterSetNote(getContext(), imageNoteList);
+
         recyclerImageNote.setHasFixedSize(true);
         StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerImageNote.setLayoutManager(layout);
@@ -446,7 +480,6 @@ public class SetNoteFragment extends Fragment {
         });
         dialog.show();
     }
-
     public static String getTAG() {
         return TAG;
     }

@@ -86,7 +86,7 @@ public class AlarmActivity extends AppCompatActivity {
                     try{
                     intent = new Intent(getApplicationContext(),AlarmService.class);
                     intent.setAction(TOOL.ACTION_START_SERVICE);
-                    intent.putExtra("checkAlarm", true);
+                    intent.putExtra("checkAlarm", false);
                     startService(intent);
                     }catch (Exception e)
                     {
@@ -161,6 +161,8 @@ public class AlarmActivity extends AppCompatActivity {
         tv_time.setText("");
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent intent = new Intent(this, AlarmService.class);
+        intent.setAction(TOOL.ACTION_START_SERVICE);
+        intent.putExtra("checkMusic", false);
         PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
     }

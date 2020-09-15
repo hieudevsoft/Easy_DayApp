@@ -81,6 +81,7 @@ public class HomeFragment extends Fragment {
                 imageViewTheme.setImageBitmap(TOOL.convertStringToBitmap(uri));
             }
         });
+
         settingsRequestPermissionFlashLight();
         view.findViewById(R.id.bt_addNote).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +122,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Dialog dialog = new Dialog(getContext());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.setContentView(R.layout.information_me);
                 dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 dialog.show();
@@ -213,7 +213,6 @@ public class HomeFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-
                 if(!checkID) insertData(id, "https://p0.pikrepo.com/preview/580/401/white-wall-with-black-line.jpg", HelpersServiceThemes.getUrlWebserviceInsert());
             }
         }, new Response.ErrorListener() {

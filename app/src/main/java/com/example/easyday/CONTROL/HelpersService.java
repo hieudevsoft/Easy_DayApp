@@ -1,7 +1,9 @@
 package com.example.easyday.CONTROL;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,8 +35,15 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class HelpersService {
+//    private static String urlInsertNoteFromService = "http://192.168.1.7:8080/EasyDayFile/insertDataNote.php";
+//    private static String urlGetNoteFromService ="http://192.168.1.7:8080/EasyDayFile/getDataNote.php";
+//    private static String urlUpdateDataFromService ="http://192.168.1.7:8080/EasyDayFile/updateDataNote.php";
+//    private static String urlDeleteNoteFromService ="http://192.168.1.7:8080/EasyDayFile/deleteDataNote.php";
+
     private static String urlInsertNoteFromService = "https://easayday.000webhostapp.com/insertDataNote.php";
     private static String urlGetNoteFromService ="https://easayday.000webhostapp.com/getDataNote.php";
     private static String urlUpdateDataFromService ="https://easayday.000webhostapp.com/updateDataNote.php";
@@ -72,7 +81,7 @@ public class HelpersService {
         HelpersService.urlDeleteNoteFromService = urlDeleteNoteFromService;
     }
 
-    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser) {
+    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser, final Activity activity) {
         final List<Note> noteList = new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -137,7 +146,7 @@ public class HelpersService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                TOOL.setToast(context, "Disconnect sever~");
+                TOOL.setToast(context, "Waiting connect to server~");
             }
         });
         requestQueue.add(jsonArrayRequest);
@@ -174,7 +183,7 @@ public class HelpersService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                TOOL.setToast(context, "Disconnect sever~");
+                TOOL.setToast(context, "Waiting connect to sever~");
             }
         });
         requestQueue.add(jsonArrayRequest);
@@ -205,5 +214,4 @@ public class HelpersService {
         };
         requestQueue.add(request);
     }
-
 }

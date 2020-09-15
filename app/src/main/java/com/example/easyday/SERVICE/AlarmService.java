@@ -42,7 +42,7 @@ public class AlarmService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("alarmService", intent.getBooleanExtra("checkMusic", false) + "");
-        if (intent!=null && intent.getAction().equals(TOOL.ACTION_START_SERVICE)) {
+        if (intent!=null && intent.getAction().equals(TOOL.ACTION_START_SERVICE) && intent.getBooleanExtra("checkMusic", false)) {
             startNotificationAlarm(intent);
         } else {
             stopMyService();
@@ -62,10 +62,12 @@ public class AlarmService extends Service {
         else {
             if(isServiceRunning) return;
             isServiceRunning = true;
+
+            if(intent.getBooleanExtra("checkMusic", false))
+            {
             alarmMusic = MediaPlayer.create(getApplicationContext(), intent.getIntExtra("music", R.raw.done));
             alarmMusic.setLooping(true);
             alarmMusic.start();
-
             Intent notificationIntent = new Intent(getApplicationContext(), AlarmActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             notificationIntent.setAction(TOOL.ACTION_MAIN);
@@ -90,6 +92,7 @@ public class AlarmService extends Service {
 
             nb.flags = nb.flags | Notification.FLAG_NO_CLEAR;
             notificationManager.notify(1, nb);
+            }
         }
     }
 
