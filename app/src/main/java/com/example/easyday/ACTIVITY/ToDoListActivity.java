@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.example.easyday.CONTROL.TOOL;
+import com.example.easyday.FRAGMENT.note.MainNoteFragment;
 import com.example.easyday.FRAGMENT.note.SetNoteFragment;
 import com.example.easyday.R;
 
@@ -27,6 +28,7 @@ public class ToDoListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
+        MainNoteFragment.check=false;
         if (count == 0) {
             finish();
             //additional code

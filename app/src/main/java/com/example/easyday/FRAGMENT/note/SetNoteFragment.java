@@ -67,7 +67,7 @@ public class SetNoteFragment extends Fragment {
     MediaPlayer mediaPlayerBack;
     MediaPlayer mediaPlayerOpenCam;
     List<ImageNote> imageNoteList;
-    List<Note> noteList;
+    public static List<Note> noteList;
     TextInputEditText edt_title;
     EditText edt_content;
     int sizeImagenote;
@@ -82,7 +82,7 @@ public class SetNoteFragment extends Fragment {
     Uri imageUri;
     final int REQUEST_CODE_SETUP_CAM = 78;
     final static String TAG="SetNoteFragment";
-
+    int positionNoteSend=-1;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,11 +102,16 @@ public class SetNoteFragment extends Fragment {
         if (getArguments() != null) {
             SetNoteFragmentArgs args = SetNoteFragmentArgs.fromBundle(getArguments());
             Note note = args.getNote();
+            positionNoteSend = args.getPositionNote();
             if (note != null) {
+                Log.d(getTAG(),"position note: " + positionNoteSend);
                 updateView(note);
             } else
                 openTerm();
         }
+        noteList.clear();
+        noteList.addAll(MainNoteFragment.listNotesTempAllList);
+        Log.d(getTAG(),"List size " +noteList.size());
         bt_done_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +128,7 @@ public class SetNoteFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mediaPlayerBack = MediaPlayer.create(getContext(), R.raw.back);
+                MainNoteFragment.check = true;
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -240,8 +246,8 @@ public class SetNoteFragment extends Fragment {
             try {
                 image = MediaStore.Images.Media.getBitmap(requireActivity().getContentResolver(), imageUri);
                 Log.d("review",TOOL.convertBitMapToString(image).length()+"");
-                Log.d("review","resize: " + TOOL.convertBitMapToString(TOOL.scaleDown(image, 480,true)).length()+"");
-                Bitmap imageResize = TOOL.scaleDown(image, 480, true);
+                Log.d("review","resize: " + TOOL.convertBitMapToString(TOOL.scaleDown(image, 720,true)).length()+"");
+                Bitmap imageResize = TOOL.scaleDown(image, 720, true);
                 imageNoteList.add(new ImageNote(imageResize, ""));
                 recyclerAdapterSetNote.notifyDataSetChanged();
             } catch (IOException e) {
@@ -252,6 +258,7 @@ public class SetNoteFragment extends Fragment {
 
 
     private void updateDataNote() {
+        Note note = new Note();
         String idNote = edt_idNote.getText().toString().trim();
         String titleNote = edt_title.getText().toString().trim();
         String contentNote = edt_content.getText().toString().trim();
@@ -260,6 +267,11 @@ public class SetNoteFragment extends Fragment {
             edt_title.requestFocus();
         } else {
             int level = spinner.getSelectedItemPosition() + 1;
+            note.setIdNote(user.getUid().concat(idNote + "_"));
+            note.setTitle(titleNote);
+            note.setContent(contentNote);
+            note.setLevel(level);
+            note.setImgNotes(new ArrayList<ImageNote>());
             if (imageNoteList.size() != 0) {
                 Log.d(TAG, "ImageNoteList size != 0" );
                 if (imageNoteList.size() < sizeImagenote) {
@@ -329,6 +341,9 @@ public class SetNoteFragment extends Fragment {
             }
             updateNote(HelpersService.getUrlUpdateDataFromService(), user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
                     , "", level, getContext());
+                for (int i = 0; i < imageNoteList.size(); i++)
+                    note.getImgNotes().add(imageNoteList.get(i));
+            noteList.set(positionNoteSend, note);
             mediaPlayerDone = MediaPlayer.create(getContext(), R.raw.done);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -397,8 +412,10 @@ public class SetNoteFragment extends Fragment {
     }
 
     private void insertDataNote() {
+        final Note note = new Note();
         String idNote = edt_idNote.getText().toString().trim();
         String titleNote = edt_title.getText().toString().trim();
+
         if (idNote.length() == 0) {
             edt_idNote.setError("It's mandatory");
             edt_idNote.requestFocus();
@@ -415,21 +432,30 @@ public class SetNoteFragment extends Fragment {
 
                     }
                     else {
+
                         String idNote = edt_idNote.getText().toString().trim();
                         String titleNote = edt_title.getText().toString().trim();
                         String contentNote = edt_content.getText().toString().trim();
                          if (!idNote.contains("_")) {
+                             note.setIdNote(user.getUid().concat(idNote).concat("_"));
+                             note.setTitle(titleNote);
+                             note.setContent(contentNote);
                              int level = spinner.getSelectedItemPosition() + 1;
+                             note.setLevel(level);
                              insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote).concat("_"), titleNote, contentNote, ""
                                      , "", level, getContext());
+                             note.setImgNotes(new ArrayList<ImageNote>());
                             if (imageNoteList.size() != 0) {
                                 Log.d("review","imgnoteList: " + imageNoteList.size());
-                                for (int i = 0; i < imageNoteList.size(); i++)
-                                        insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
-                                                TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
-
+                                for (int i = 0; i < imageNoteList.size(); i++) {
+                                    insertNote(HelpersService.getUrlInsertNoteFromService(), user.getUid().concat(idNote + "_").concat(String.valueOf(i)), "", "",
+                                            TOOL.convertBitMapToString(imageNoteList.get(i).getImageNote()), imageNoteList.get(i).getDescriptionImage(), level, getContext());
+                                    note.getImgNotes().add(imageNoteList.get(i));
+                                }
                             }
-
+                MainNoteFragment.check = true;
+                noteList.add(note);
+                Log.d(getTAG(),"Note list after insert: " +noteList.size());
                 mediaPlayerDone = MediaPlayer.create(getContext(), R.raw.done);
                 new Handler().postDelayed(new Runnable() {
                     @Override

@@ -40,48 +40,57 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainNoteFragment extends Fragment {
+public class MainNoteFragment extends Fragment implements RecyclerAdapterMainNote.sendPositionNoteDelete {
     RecyclerAdapterMainNote recyclerAdapterMainNote;
-    List<Note> listNotes;
-    List<Note> listNotesTempAllList;
+    public static List<Note> listNotes;
+    public static List<Note> listNotesTempAllList;
     RecyclerView recyclerNotes;
     TextInputEditText edt_search_note;
     FloatingActionButton bt_addNode;
     MediaPlayer mediaPlayer;
+    public static boolean check = false;
     Chip chip_low, chip_high;
     ChipGroup chipGroup;
-
     final static String TAG = "MainNoteFragment";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext()).inflate(R.layout.main_note_layout, null);
         listNotesTempAllList = new ArrayList<>();
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.getUrlGetNoteFromService(), FirebaseAuth.getInstance().getCurrentUser().getUid(),requireActivity());
-        super.onResume();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mapping();
+        mapping(view);
         initComponents();
         SendListNote sendListNote = ViewModelProviders.of((FragmentActivity) getContext()).get(SendListNote.class);
         sendListNote.getListNote().observe(getViewLifecycleOwner(), new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> noteList) {
                 listNotes.clear();
-                listNotes.addAll(noteList);
-                listNotesTempAllList.clear();
-                listNotesTempAllList.addAll(listNotes);
-                recyclerAdapterMainNote.notifyDataSetChanged();
-                Log.d("SetNoteFragment","Send model: " + listNotesTempAllList.size()+"");
+                    if(check) {
+
+                        listNotes.addAll(SetNoteFragment.noteList);
+                    }
+                   else{
+                        listNotes.addAll(noteList);
+                    }
+                    listNotesTempAllList.clear();
+                    listNotesTempAllList.addAll(noteList);
+                    Log.d("SetNoteFragment", "On Create View Main");
+                    recyclerAdapterMainNote.notifyDataSetChanged();
             }
         });
+        return view;
+    }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if(!check)
+        HelpersService.getNoteFromServiceByIds(getContext(), HelpersService.getUrlGetNoteFromService(), FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        Log.d("SetNoteFragment","On Created View");
         edt_search_note.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -101,7 +110,6 @@ public class MainNoteFragment extends Fragment {
             }
         });
         controlSortList();
-
         super.onViewCreated(view, savedInstanceState);
 
     }
@@ -146,10 +154,10 @@ public class MainNoteFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         final MainNoteFragmentDirections.ActionAddNote action = MainNoteFragmentDirections.actionAddNote();
-        mediaPlayer = MediaPlayer.create(getContext(), R.raw.click);
         bt_addNode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mediaPlayer = MediaPlayer.create(getContext(), R.raw.click);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -166,14 +174,20 @@ public class MainNoteFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        mediaPlayer.stop();
-        mediaPlayer.release();
-        mediaPlayer = null;
+        try {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer=null;
+        }catch (Exception e)
+        {
+
+        }
     }
+
 
     private void initComponents() {
         listNotes = new ArrayList<>();
-        recyclerAdapterMainNote = new RecyclerAdapterMainNote(listNotes, getContext());
+        recyclerAdapterMainNote = new RecyclerAdapterMainNote(listNotes, getContext(),this);
         recyclerNotes.setHasFixedSize(true);
         StaggeredGridLayoutManager layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layout.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
@@ -182,18 +196,17 @@ public class MainNoteFragment extends Fragment {
 
     }
 
-    private void mapping() {
-        edt_search_note = getView().findViewById(R.id.edt_search_note);
-        recyclerNotes = getView().findViewById(R.id.recyclerViewNotes);
-        bt_addNode = getView().findViewById(R.id.fltbt_AddNote);
-        chip_low = getView().findViewById(R.id.chip_low);
-        chip_high = getView().findViewById(R.id.chip_high);
-        chipGroup = getView().findViewById(R.id.chip_priority_group);
+    private void mapping(View view) {
+        edt_search_note = view.findViewById(R.id.edt_search_note);
+        recyclerNotes = view.findViewById(R.id.recyclerViewNotes);
+        bt_addNode = view.findViewById(R.id.fltbt_AddNote);
+        chip_low = view.findViewById(R.id.chip_low);
+        chip_high = view.findViewById(R.id.chip_high);
+        chipGroup = view.findViewById(R.id.chip_priority_group);
     }
 
     private void filter(CharSequence s) {
         Log.d(getTAG(),"ListnoteTempAllist: " + listNotesTempAllList.size()+"");
-        Log.d("SetNoteFragment",listNotesTempAllList.size()+"");
         listNotes.clear();
         if (s.toString().length() == 0) {
             listNotes.addAll(listNotesTempAllList);
@@ -208,5 +221,13 @@ public class MainNoteFragment extends Fragment {
 
     public static String getTAG() {
         return TAG;
+    }
+
+    @Override
+    public void send(int position) {
+        listNotesTempAllList.clear();
+        listNotesTempAllList.addAll(SetNoteFragment.noteList);
+        listNotesTempAllList.remove(position);
+        recyclerAdapterMainNote.notifyDataSetChanged();
     }
 }

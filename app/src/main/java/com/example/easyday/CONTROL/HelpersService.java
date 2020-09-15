@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.easyday.ADAPTER.RecyclerAdapterMainNote;
 import com.example.easyday.ENTITY.ImageNote;
 import com.example.easyday.ENTITY.Note;
+import com.example.easyday.FRAGMENT.note.MainNoteFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,12 +44,10 @@ public class HelpersService {
 //    private static String urlGetNoteFromService ="http://192.168.1.7:8080/EasyDayFile/getDataNote.php";
 //    private static String urlUpdateDataFromService ="http://192.168.1.7:8080/EasyDayFile/updateDataNote.php";
 //    private static String urlDeleteNoteFromService ="http://192.168.1.7:8080/EasyDayFile/deleteDataNote.php";
-
     private static String urlInsertNoteFromService = "https://easayday.000webhostapp.com/insertDataNote.php";
     private static String urlGetNoteFromService ="https://easayday.000webhostapp.com/getDataNote.php";
     private static String urlUpdateDataFromService ="https://easayday.000webhostapp.com/updateDataNote.php";
     private static String urlDeleteNoteFromService ="https://easayday.000webhostapp.com/deleteDataNote.php";
-
     public static String getUrlInsertNoteFromService() {
         return urlInsertNoteFromService;
     }
@@ -81,8 +80,10 @@ public class HelpersService {
         HelpersService.urlDeleteNoteFromService = urlDeleteNoteFromService;
     }
 
-    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser, final Activity activity) {
+    public static void getNoteFromServiceByIds(final Context context, String url, final String idUser) {
+
         final List<Note> noteList = new ArrayList<>();
+        Long timeNow = System.currentTimeMillis();
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -146,7 +147,7 @@ public class HelpersService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                TOOL.setToast(context, "Waiting connect to server~");
+                TOOL.setToast(context, "Loading Note....");
             }
         });
         requestQueue.add(jsonArrayRequest);
@@ -183,7 +184,7 @@ public class HelpersService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                TOOL.setToast(context, "Waiting connect to sever~");
+
             }
         });
         requestQueue.add(jsonArrayRequest);

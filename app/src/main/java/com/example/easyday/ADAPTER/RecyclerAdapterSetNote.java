@@ -88,7 +88,7 @@ public class RecyclerAdapterSetNote extends RecyclerView.Adapter<RecyclerAdapter
 //                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100,byteArrayOutputStream);
 //                    byte[] img = byteArrayOutputStream.toByteArray();
                     imageView.setImageBitmap(listImageNote.get(position).getImageNote());
-                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                     dialog.show();
                 }
             });

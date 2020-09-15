@@ -25,5 +25,9 @@
             app:argType="com.example.easyday.ENTITY.Note"
             android:name="Note"
             android:defaultValue="@null" />
+        <argument
+            android:name="positionNote"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 </navigation>

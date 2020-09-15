@@ -20,6 +20,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.easyday.CONTROL.HelpersService;
+import com.example.easyday.CONTROL.SendPositionSong;
 import com.example.easyday.ENTITY.Note;
 import com.example.easyday.FRAGMENT.note.MainNoteFragmentDirections;
 import com.example.easyday.R;
@@ -31,12 +32,23 @@ import java.util.List;
 public class RecyclerAdapterMainNote extends RecyclerView.Adapter<RecyclerAdapterMainNote.ViewHolder>{
     private List<Note> listNote;
     private Context context;
-    private List<Note> temp;
+    sendPositionNoteDelete sendPositionNoteDelete;
+    public interface sendPositionNoteDelete
+    {
+        void send(int position);
+    }
+    public List<Note> getListNote() {
+        return listNote;
+    }
 
-    public RecyclerAdapterMainNote(List<Note> listNote, Context context) {
+    public void setListNote(List<Note> listNote) {
+        this.listNote = listNote;
+    }
+
+    public RecyclerAdapterMainNote(List<Note> listNote, Context context, sendPositionNoteDelete sendPositionNoteDelete) {
+        this.sendPositionNoteDelete = sendPositionNoteDelete;
         this.listNote = listNote;
         this.context = context;
-        this.temp = new ArrayList<>(listNote);
     }
 
     @NonNull
@@ -62,23 +74,21 @@ public class RecyclerAdapterMainNote extends RecyclerView.Adapter<RecyclerAdapte
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                             String idNote = listNote.get(position).getIdNote();
-                            if(listNote.get(position).getImgNotes().size()!=0)
-                            for(int i = 0; i < listNote.get(position).getImgNotes().size();i++)
-                            {
-                                HelpersService.deleteImageNoteByPosition(context, idNote.concat(i+""));
-                            }else  {
-                                HelpersService.deleteImageNoteByPosition(context, idNote);
-                            }
-                            try {
-                                HelpersService.deleteImageNoteByPosition(context, idNote);
-                            }catch (Exception e)
-                            {
 
-                            }
+                                if (listNote.get(position).getImgNotes().size() != 0)
+                                    for (int i = 0; i < listNote.get(position).getImgNotes().size(); i++) {
+                                        HelpersService.deleteImageNoteByPosition(context, idNote.concat(i + ""));
+                                    }
+                                else {
+                                    HelpersService.deleteImageNoteByPosition(context, idNote);
+                                }
+                                try {
+                                    HelpersService.deleteImageNoteByPosition(context, idNote);
+                                } catch (Exception e) {
 
-
+                                }
                         listNote.remove(position);
-                        notifyDataSetChanged();
+                        sendPositionNoteDelete.send(position);
                     }
                 });
                 builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
@@ -97,6 +107,7 @@ public class RecyclerAdapterMainNote extends RecyclerView.Adapter<RecyclerAdapte
             public void onClick(View v) {
                 MainNoteFragmentDirections.ActionAddNote action = MainNoteFragmentDirections.actionAddNote();
                 action.setNote(listNote.get(position));
+                action.setPositionNote(position);
                 Navigation.findNavController((Activity) context,R.id.fragmentHost).navigate(action);
             }
         });
