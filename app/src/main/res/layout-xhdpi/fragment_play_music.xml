@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/custom_back_ground_splash_music"
+    tools:context=".FRAGMENT.music.fragmentsviewpager2.PlayMusicFragment">
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:id="@+id/blurImageSongs"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="TODO" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="40dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/imageSongsAlbum"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:src="@drawable/music"
+                android:contentDescription="TODO" />
+
+            <LinearLayout
+                android:id="@+id/layout_DetailsSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageSongsAlbum"
+                android:layout_marginTop="40dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/name_Song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:alpha="0.7"
+                    android:fontFamily="@font/lato_regular"
+                    android:text="Name Song"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/artist_Song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:alpha="0.6"
+                    android:fontFamily="@font/roboto"
+                    android:text="Artist song"
+                    android:textColor="@color/colorTextWhite"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_ControlSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layout_DetailsSong"
+                android:layout_marginTop="35dp"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/bt_shuffle_song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_shuffle"
+                    android:contentDescription="TODO" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/bt_play_pause"
+                    android:layout_toEndOf="@id/bt_shuffle_song">
+                    <ImageButton
+                        android:id="@+id/bt_prev_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_prev_song"
+                        android:contentDescription="TODO" />
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/bt_play_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_play"
+                    android:contentDescription="TODO" />
+                <RelativeLayout
+                    android:layout_toStartOf="@id/bt_lopping_song"
+                    android:layout_toEndOf="@id/bt_play_pause"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageButton
+                        android:layout_centerInParent="true"
+                        android:id="@+id/bt_next_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_next_song"
+                        android:contentDescription="TODO" />
+                </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/bt_lopping_song"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_looping_song"
+                    android:contentDescription="TODO" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_marginTop="40dp"
+                android:layout_below="@id/layout_ControlSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/start_time_song"
+                    android:alpha="0.4"
+                    android:textColor="@color/colorTextWhite"
+                    android:text="00:00"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <SeekBar
+                    android:thumb="@android:color/transparent"
+                    android:splitTrack="false"
+                    android:id="@+id/duration_Song"
+                    android:progressDrawable="@drawable/custom_seekbar_song"
+                    android:layout_centerInParent="true"
+                    android:layout_toEndOf="@id/start_time_song"
+                    android:layout_toStartOf="@id/end_time_song"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"/>
+                <TextView
+                    android:id="@+id/end_time_song"
+                    android:alpha="0.4"
+                    android:textColor="@color/colorTextWhite"
+                    android:text="00:00"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
