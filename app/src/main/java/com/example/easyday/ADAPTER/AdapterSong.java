@@ -46,7 +46,15 @@ public class AdapterSong extends RecyclerView.Adapter<AdapterSong.ViewHolder> {
     public void onBindViewHolder(@NonNull AdapterSong.ViewHolder holder, final int position) {
         holder.tv_title.setText(listMusics.get(position).getTitle());
         holder.tv_artist.setText(listMusics.get(position).getArtist());
-        byte[] iamge = TOOL.getAlbumArt(listMusics.get(position).getData());
+        byte [] iamge = null;
+        try
+        {
+            iamge = TOOL.getAlbumArt(listMusics.get(position).getData());
+        }catch (Exception e)
+        {
+
+        }
+
         if(iamge!=null){
             Glide.with(context).asBitmap().centerCrop().load(iamge).into(holder.image_songs);
         }

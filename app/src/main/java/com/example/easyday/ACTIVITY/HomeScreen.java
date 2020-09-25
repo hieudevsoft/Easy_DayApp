@@ -34,13 +34,14 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
     BottomNavigationView bottomNavigationView;
     RelativeLayout relativeLayout;
     List<Fragment> listFragment;
-
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         TOOL.FULL_SCREEN(this);
         setContentView(R.layout.activity_home_screen);
         mapping();
+        timer = new Timer();
         settingsViewPager2();
         settingsNavBottom();
         updateBottomNav();
@@ -112,7 +113,6 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
 
     private void updateBottomNav()
     {
-        Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -168,7 +168,12 @@ public class HomeScreen extends AppCompatActivity implements MeFragment.OnClickL
         }catch (Exception e){
 
         }
-
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 }

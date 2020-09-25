@@ -83,7 +83,6 @@ public class HelpersService {
     public static void getNoteFromServiceByIds(final Context context, String url, final String idUser) {
 
         final List<Note> noteList = new ArrayList<>();
-        Long timeNow = System.currentTimeMillis();
         final RequestQueue requestQueue = Volley.newRequestQueue(context);
         final JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override

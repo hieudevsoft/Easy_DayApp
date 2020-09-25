@@ -64,11 +64,9 @@ public class SignInActivity extends AppCompatActivity {
         mapping();
         showSignUp();
         try {
-
             if (checkNetWorking()) {
                 mAuth = FirebaseAuth.getInstance();
                 FacebookSdk.sdkInitialize(getApplicationContext());
-
                 loginWithFacebook();
                 bt_signin.setOnClickListener(new View.OnClickListener() {
                     @Override

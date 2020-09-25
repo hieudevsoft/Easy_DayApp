@@ -25,7 +25,6 @@ import java.util.Locale;
 
 
 public class ParserJSonWeather {
-    private String location,humidity,sunset,sunrise,time,temp,minTemp,maxTemp,wind,pressure,status;
     private Context context;
     private final static String API_WEATHER = "https://api.openweathermap.org/data/2.5/weather?q=";
     private final static String API_KEY_WEATHER = "cc3e96b3ac51918adf3f0270b9631079";
